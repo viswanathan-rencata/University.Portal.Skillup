@@ -18,16 +18,16 @@ namespace University.Portal.Data.Interface
 		void Remove(TEntity entity);
 
 		TEntity Get(int Id);
+		
 		Task<TEntity> GetAsync(int Id);
+		
+		List<TEntity> GetByFilter(Expression<Func<TEntity, bool>> FilterBy, string IncludeStr = null);
+		
+		Task<List<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> FilterBy, string IncludeStr = null);
 
-		TEntity Get(Expression<Func<TEntity, bool>> FilterBy);
-		Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> FilterBy);
-
-		List<TEntity> GetByFilter(Expression<Func<TEntity, bool>> FilterBy);
-		Task<List<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> FilterBy);
-
-		List<TEntity> GetAll();
-		Task<List<TEntity>> GetAllAsync();
+		List<TEntity> GetAll(string IncludeStr = null);
+		
+		Task<List<TEntity>> GetAllAsync(string IncludeStr = null);
 
 	}
 }

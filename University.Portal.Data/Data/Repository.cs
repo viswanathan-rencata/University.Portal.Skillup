@@ -34,42 +34,71 @@ namespace University.Portal.Data.Data
 		}		
 
 		public TEntity Get(int Id)
-		{
-			return _context.Set<TEntity>().Find(Id);
-		}
+		{            
+            return _context.Set<TEntity>().Find(Id);
+
+        }
 
 		public async Task<TEntity> GetAsync(int Id)
 		{
 			return await _context.Set<TEntity>().FindAsync(Id);
+		}		
+
+		public List<TEntity> GetAll(string IncludeStr = null)
+		{
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+			if (!string.IsNullOrWhiteSpace(IncludeStr))
+			{
+                foreach (var includeProperty in IncludeStr.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }                
+			}
+			
+            return query.ToList();
+		}
+		public async Task<List<TEntity>> GetAllAsync(string IncludeStr = null)
+		{
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+            if (!string.IsNullOrWhiteSpace(IncludeStr))
+            {
+                foreach (var includeProperty in IncludeStr.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return await query.ToListAsync();
+        }
+
+		public List<TEntity> GetByFilter(Expression<Func<TEntity, bool>> FilterBy, string IncludeStr = null)
+		{
+            IQueryable<TEntity> query = _context.Set<TEntity>().Where(FilterBy);
+            if (!string.IsNullOrWhiteSpace(IncludeStr))
+            {
+                foreach (var includeProperty in IncludeStr.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+            return query.ToList();
 		}
 
-		public TEntity Get(Expression<Func<TEntity, bool>> FilterBy)
+		public async Task<List<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> FilterBy, string IncludeStr = null)
 		{
-			return _context.Set<TEntity>().Where(FilterBy).FirstOrDefault();
-		}
-
-		public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> FilterBy)
-		{
-			return await _context.Set<TEntity>().Where(FilterBy).FirstOrDefaultAsync();
-		}
-
-		public List<TEntity> GetAll()
-		{
-			return _context.Set<TEntity>().ToList();
-		}
-		public async Task<List<TEntity>> GetAllAsync()
-		{
-			return await _context.Set<TEntity>().ToListAsync();
-		}
-
-		public List<TEntity> GetByFilter(Expression<Func<TEntity, bool>> FilterBy)
-		{
-			return _context.Set<TEntity>().Where(FilterBy).ToList();
-		}
-
-		public async Task<List<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> FilterBy)
-		{
-			return await _context.Set<TEntity>().Where(FilterBy).ToListAsync();
+            IQueryable<TEntity> query = _context.Set<TEntity>().Where(FilterBy);
+            if (!string.IsNullOrWhiteSpace(IncludeStr))
+            {
+                foreach (var includeProperty in IncludeStr.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+            return await query.ToListAsync();
 		}
 
 		public void Update(TEntity entity)

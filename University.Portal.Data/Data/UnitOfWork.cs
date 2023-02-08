@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using University.Portal.Data.Data.Models;
 using University.Portal.Data.Interface;
 
 namespace University.Portal.Data.Data
@@ -17,8 +18,9 @@ namespace University.Portal.Data.Data
 		}
 
 		public IRepository<AppUser> UserRepository => new Repository<AppUser>(_context);
+        public IRepository<Role> RoleRepository => new Repository<Role>(_context);
 
-		public bool Complete()
+        public bool Complete()
 		{
 			return _context.SaveChanges() > 0;
 		}

@@ -203,10 +203,11 @@ input {
 }
 </style>
 
+@model University.Portal.Data.Data.ViewModels.LoginViewModel;
 
 <div class="container" id="container">    
     <div class="form-container univ-sign-in-container">
-        <form action="#">
+        <form id="univ-sign-in-form">
             <h2>University</h2>
             <div class="social-container">
                 <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -214,10 +215,16 @@ input {
                 <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
             </div>
             <span>or use your account</span>
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
+            <input type="text" class="form-control" asp-for="UserName" placeholder="UserName" />            
+            <input type="password" class="form-control" asp-for="Password" placeholder="Password" />
             <a asp-action="register" >Sign Up Here!</a>
-            <button>Sign In</button>
+            <button id="univ-sign-in" type="button">Sign in</button>
+            <div class="card border-danger mb-3 mt-3 col-lg-12" id="loginValidation">
+                <div class="card-body text-danger">
+                    <h5 class="card-title">Login Failed</h5>
+                    <span class="card-text" id="loginFailed"></span>
+                </div>
+            </div>
         </form>
     </div>
     <div class="form-container stud-sign-in-container">

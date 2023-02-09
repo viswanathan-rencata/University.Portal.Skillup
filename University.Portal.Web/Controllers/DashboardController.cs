@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using University.Portal.Data.Data;
@@ -18,7 +21,7 @@ namespace University.Portal.Web.Controllers
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
-        {
+        {            
             return View();
         }
 
@@ -55,10 +58,16 @@ namespace University.Portal.Web.Controllers
                     return View(GetRegisterViewModel(true));
                 }
 
-                var university = new UniversityMaster
+                var universityList = await _unitOfWork.UniversityRepository.GetByFilterAsync(x => x.UniversityName.ToLower() == model.University.ToLower());
+
+                var university = universityList.FirstOrDefault();
+                if(university is null)
                 {
-                    UniversityName = model.University.ToUpper(),
-                };                
+                    university = new UniversityMaster
+                    {
+                        UniversityName = model.University.ToUpper(),
+                    };
+                }                              
 
                 var appUserRole = new AppUserRole
                 {
@@ -93,6 +102,81 @@ namespace University.Portal.Web.Controllers
                 return View(GetRegisterViewModel(true));
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userList = await _unitOfWork.UserRepository.GetByFilterAsync(x => x.UserName == model.UserName 
+                                                && x.StudentOrUniversity == (int)StudentOrUniversity.University, IncludeStr: "University");
+                var user = userList.FirstOrDefault();
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("PasswordMatchError", "UserName/Password is incorrect");
+                    model.IsLoginSucceed = false;
+                    return Json("UserName/Password is incorrect");
+                }
+                else
+                {
+                    if (!user.Status)
+                    {
+                        ModelState.AddModelError("UserInactiveError", $"{model.UserName} is inactive.Please contact administrator. ");
+                        model.IsLoginSucceed = false;
+                        return Json($"{model.UserName} is inactive.Please contact administrator. ");
+                    }                    
+                }
+
+                using var hmac = new HMACSHA512(user.PasswordSalt);
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(model.Password));
+
+                if (!computedHash.SequenceEqual(user.PasswordHash))
+                {
+                    ModelState.AddModelError("PasswordMatchError", "UserName/Password is incorrect");
+                    model.IsLoginSucceed = false;
+                    return Json("UserName/Password is incorrect");
+                }
+                var userRoleList = await _unitOfWork.AppUserRoleRepository.GetByFilterAsync(x => x.AppUserID == user.Id, IncludeStr:"Role");
+                var userRole = userRoleList.FirstOrDefault();
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("UserId", user.Id.ToString()),
+                    new Claim("StudentOrUniversity", user.StudentOrUniversity.ToString()),
+                    new Claim("UniversityId", user.UniversityId.ToString()),
+                    new Claim("UniversityName", user?.University?.UniversityName),
+                    new Claim("Role", userRole?.Role.RoleName)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties { IsPersistent = true };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                return Json("Success");
+            }
+            else
+            {
+                model.IsLoginSucceed = false;
+                return Json("Please enter valid UserName/Password");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Dashboard");
+        }
+
 
         private UniversityRegisterViewModel GetRegisterViewModel(bool isRegistrationFailed = false)
         {

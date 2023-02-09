@@ -1,0 +1,80 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_DashboardLayout";
+}
+
+@model University.Portal.Data.Data.ViewModels.UniversityRegisterViewModel;
+
+<div class="container-fluid ps-md-0">
+    <div class="row g-0">
+        <div class="d-none d-md-flex col-md-4 col-lg-6 bg-com1-image"></div>
+        <div class="col-md-8 col-lg-6">
+            <div class="login d-flex align-items-center py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9 col-lg-8 mx-auto">
+                            <h3 class="login-heading mb-4">Sign up here!</h3>
+                            <!-- Sign Up Form -->
+                            @if (Model.IsRegistrationFailed)
+                            {
+                                <div class="card border-danger mb-3">
+                                    <div class="card-body text-danger">
+                                        <h5 class="card-title">Registration Failed</h5>
+                                        <span class="card-text" asp-validation-for="UserNameMatchError"></span>
+                                        <span class="card-text" asp-validation-for="UniversitySelectionError"></span>
+                                    </div>
+                                </div>
+                            }
+                            <form asp-action="Register" method="post">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="UserName" placeholder="UserName" />
+                                    <label asp-for="UserName">User Name</label>
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" asp-for="Password" placeholder="Password" />
+                                    <label asp-for="Password">Password</label>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Confirm Password" />
+                                    <label asp-for="ConfirmPassword">Confirm Password</label>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" asp-for="University" class="form-control" placeholder="University" />
+                                    <label asp-for="University">University</label>
+                                    <span asp-validation-for="University" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select asp-for="RoleId" asp-items="@Model.Role" class="form-control"></select>
+                                    <label asp-for="RoleId">Role</label>
+                                    <span asp-validation-for="Role" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" asp-for="Email" placeholder="Email" />
+                                    <label asp-for="Email">Email</label>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" />
+                                    <label asp-for="PhoneNumber">Phone Number</label>
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Sign up</button>
+                                    <div class="text-center">
+                                        <a class="small" asp-action="index">Go to Login</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -36,10 +36,17 @@ namespace University.Portal.Data.Data
 
 		[Column("Status")]
 		public bool Status { get; set; }
-		
-		[Column("CreatedOn")]
+        
+		[Column("Email")]
+        public string Email { get; set; }
+
+        [Column("PhoneNumber")]
+        public string PhoneNumber { get; set; }
+
+        [Column("CreatedOn")]
 		public DateTime CreatedOn { get; set; } = DateTime.Now;
 
 		public AppUserRole AppUserRole { get; set; }
-	}
+		public UniversityMaster? University { get; set; }
+    }
 }

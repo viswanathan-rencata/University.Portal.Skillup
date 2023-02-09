@@ -8,22 +8,17 @@ using System.Threading.Tasks;
 
 namespace University.Portal.Data.Data.Models
 {
-    [Table("AppUserRole", Schema = "UniversityPortal")]
-    public class AppUserRole
+    [Table("University", Schema = "UniversityPortal")]
+    public class UniversityMaster
     {
         [Key, Column("ID", Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("AppUserID")]
-        public int AppUserID { get; set; }
+        [Column("UniversityName")]
+        public string UniversityName { get; set; }
 
-        [Column("RoleID")]
-        public int RoleID { get; set; }
         [Column("CreatedOn")]
         public DateTime CreatedOn { get; set; } = DateTime.Now;
-
-        public Role Role { get; set; }
-        public AppUser AppUser { get; set; }
     }
 }

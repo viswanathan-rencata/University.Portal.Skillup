@@ -21,6 +21,9 @@ namespace University.Portal.Data.Data
                 .HasOne(p => p.AppUserRole)
                 .WithOne(b => b.AppUser);
 
+            modelBuilder.Entity<AppUser>()
+                .HasOne(p => p.University);
+
             modelBuilder.Entity<AppUserRole>()
                 .HasOne(p => p.Role);                
 

@@ -15,6 +15,8 @@ namespace University.Portal.Data.Interface
         IRepository<Role> RoleRepository { get; }
         IRepository<UniversityMaster> UniversityRepository { get; }
         IRepository<AppUserRole> AppUserRoleRepository { get; }
+        IRepository<Department> DepartmentRepository { get; }
+        IRepository<Student> StudentRepository { get; }
         Task<bool> CompleteAsync();
 		bool Complete();
 		bool HasChanges();

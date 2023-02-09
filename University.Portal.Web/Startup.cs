@@ -34,7 +34,9 @@ namespace University.Portal.Web
 					options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
 					options.SlidingExpiration = true;
 					options.AccessDeniedPath = "/Forbidden/";
-				});
+					options.LoginPath = "/Dashboard/Index";
+					options.Cookie.Name = ".authCookie";
+                });
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,9 +61,9 @@ namespace University.Portal.Web
 			app.UseRouting();
 
 			app.UseAuthentication();
-			app.UseAuthorization();			
+			app.UseAuthorization();            
 
-			app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
 				   name: "default",

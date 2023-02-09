@@ -48,5 +48,6 @@ namespace University.Portal.Data.Data
 
 		public AppUserRole AppUserRole { get; set; }
 		public UniversityMaster? University { get; set; }
+        public Student? Student { get; set; }
     }
 }

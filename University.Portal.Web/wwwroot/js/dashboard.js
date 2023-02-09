@@ -4,8 +4,11 @@
     const universitysignInButton = document.getElementById('universitysignIn');
     const container = document.getElementById('container');
 
+    $('#loginValidation1').hide();
+
     studentsignInButton.addEventListener('click', () => {
         container.classList.remove('right-panel-active');        
+        $('#loginValidation1').hide();
     });
 
     universitysignInButton.addEventListener('click', () => {
@@ -39,4 +42,33 @@
             }
         });    
     });
+
+    $('#stud-sign-in').click(function () {
+        $('#loginValidation1').hide();
+        var myData = $('#stud-sign-in-form').serialize();
+        $.ajax({
+            type: "POST",
+            url: "/Dashboard/StudentLogin",
+            data: myData,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: "html",
+            success: function (response) {
+                if (response == '"Success"') {
+                    window.location.href = '/Student/Index'
+                } else {
+                    $('#loginValidation1').show();
+                    $('#loginFailed1').text(response);
+                }
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+
 });

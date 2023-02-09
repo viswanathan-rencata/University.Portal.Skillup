@@ -21,6 +21,8 @@ namespace University.Portal.Data.Data
         public IRepository<Role> RoleRepository => new Repository<Role>(_context);
         public IRepository<AppUserRole> AppUserRoleRepository => new Repository<AppUserRole>(_context);
         public IRepository<UniversityMaster> UniversityRepository => new Repository<UniversityMaster>(_context);
+        public IRepository<Department> DepartmentRepository => new Repository<Department>(_context);
+        public IRepository<Student> StudentRepository => new Repository<Student>(_context);
 
         public bool Complete()
 		{

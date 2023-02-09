@@ -228,7 +228,7 @@ input {
         </form>
     </div>
     <div class="form-container stud-sign-in-container">
-        <form action="#">
+        <form id="stud-sign-in-form">
             <h2>Student</h2>
             <div class="social-container">
                 <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -236,9 +236,15 @@ input {
                 <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
             </div>
             <span>or use your account</span>
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />            
-            <button style="margin-top:25px">Sign In</button>
+            <input type="text" class="form-control" asp-for="UserName" placeholder="UserName" />
+            <input type="password" class="form-control" asp-for="Password" placeholder="Password" />
+            <button id="stud-sign-in" style="margin-top:25px" type="button">Sign In</button>
+            <div class="card border-danger mb-3 mt-3 col-lg-12" id="loginValidation1">
+                <div class="card-body text-danger">
+                    <h5 class="card-title">Login Failed</h5>
+                    <span class="card-text" id="loginFailed1"></span>
+                </div>
+            </div>
         </form>
     </div>
     <div class="overlay-container">

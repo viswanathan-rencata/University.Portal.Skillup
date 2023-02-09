@@ -171,6 +171,70 @@ namespace University.Portal.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> StudentLogin(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userList = await _unitOfWork.UserRepository.GetByFilterAsync(x => x.UserName == model.UserName
+                                                && x.StudentOrUniversity == (int)StudentOrUniversity.Student, IncludeStr: "Student");
+                var user = userList.FirstOrDefault();
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("PasswordMatchError", "UserName/Password is incorrect");
+                    model.IsLoginSucceed = false;
+                    return Json("UserName/Password is incorrect");
+                }
+                else
+                {
+                    if (!user.Status)
+                    {
+                        ModelState.AddModelError("UserInactiveError", $"{model.UserName} is inactive.Please contact administrator. ");
+                        model.IsLoginSucceed = false;
+                        return Json($"{model.UserName} is inactive.Please contact administrator. ");
+                    }
+                }
+
+                using var hmac = new HMACSHA512(user.PasswordSalt);
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(model.Password));
+
+                if (!computedHash.SequenceEqual(user.PasswordHash))
+                {
+                    ModelState.AddModelError("PasswordMatchError", "UserName/Password is incorrect");
+                    model.IsLoginSucceed = false;
+                    return Json("UserName/Password is incorrect");
+                }
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, $"{user?.Student.FirstName} {user?.Student.LastName}" ),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("UserId", user.Id.ToString()),
+                    new Claim("StudentOrUniversity", user.StudentOrUniversity.ToString()),
+                    new Claim("StudentId", user.StudentId.ToString()),                    
+                    new Claim("Role", "Student")
+                };
+
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties { IsPersistent = true };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                return Json("Success");
+            }
+            else
+            {
+                model.IsLoginSucceed = false;
+                return Json("Please enter valid UserName/Password");
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();

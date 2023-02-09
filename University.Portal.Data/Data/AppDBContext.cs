@@ -14,6 +14,9 @@ namespace University.Portal.Data.Data
 		public DbSet<AppUser> AppUser { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<AppUserRole> AppUserRole { get; set; }
+        public DbSet<Department> Department { get; set; }
+        public DbSet<Student> Student { get; set; }
+        public DbSet<UniversityMaster> University { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,11 +27,20 @@ namespace University.Portal.Data.Data
             modelBuilder.Entity<AppUser>()
                 .HasOne(p => p.University);
 
+            modelBuilder.Entity<AppUser>()
+                .HasOne(p => p.Student);
+
             modelBuilder.Entity<AppUserRole>()
                 .HasOne(p => p.Role);                
 
             modelBuilder.Entity<AppUserRole>()
                 .HasOne(p => p.AppUser);
+
+            modelBuilder.Entity<Student>()
+                .HasOne(p => p.Department);
+
+            modelBuilder.Entity<Student>()
+                .HasOne(p => p.University);
         }
     }
 }

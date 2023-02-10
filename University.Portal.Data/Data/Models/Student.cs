@@ -47,14 +47,26 @@ namespace University.Portal.Data.Data.Models
 
         [Column("DepartmentId")]
         public int? DepartmentId { get; set; }
+        [Column("Year")]
+        public int? Year { get; set; }
 
         [Column("Status")]
         public bool Status { get; set; }
-        
+
         [Column("CreatedOn")]
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
 
         public Department? Department { get; set; }
         public UniversityMaster? University { get; set; }
-    }
+		
+        [NotMapped]
+		public string DepartmentName { get; set; }
+		
+        [NotMapped]
+		public string DateOfBirth { get { return DOB != null ? DOB.Value.ToString("dd/MM/yyyy") : string.Empty ; } }
+		
+        [NotMapped]
+		public string DateOfJoining { get { return DOJ != null ? DOJ.Value.ToString("dd/MM/yyyy") : string.Empty; } }
+
+	}
 }

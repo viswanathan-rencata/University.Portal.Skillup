@@ -10,5 +10,10 @@ namespace University.Portal.Web.Controllers
         {
             return View();
         }
+
+        public IActionResult DownloadDocuments()
+        {
+            return View();
+        }
     }
 }

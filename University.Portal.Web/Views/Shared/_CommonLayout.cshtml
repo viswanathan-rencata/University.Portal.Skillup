@@ -60,7 +60,7 @@
                 if (User.FindFirst("Role").Value == "OfficeAdmin" || User.FindFirst("Role").Value == "ExaminationCoordinator")
                 {
                     <li class="nav-item">
-                        <a href="/Companies" class="nav-link" aria-current="page">
+                        <a href="/University" class="nav-link" aria-current="page">
                             @* <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>*@
                             Student Details
                         </a>
@@ -71,7 +71,7 @@
                 if (User.FindFirst("Role").Value == "OfficeAdmin")
                 {
                     <li>
-                        <a href="/Companies/Candidates" class="nav-link text-white">
+                        <a href="/University/TutionFeeDetails" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>*@
                             Tution Fee notification
                         </a>
@@ -82,7 +82,7 @@
                 if (User.FindFirst("Role").Value == "ExaminationCoordinator")
                 {
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="/University/ExamScheduleNotification" class="nav-link text-white">
                             @* <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>*@
                             Exam Schedule notification
                         </a>
@@ -93,7 +93,7 @@
                 if (User.FindFirst("Role").Value == "ExaminationCoordinator")
                 {
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="/University/ExamFeeCollection" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>*@
                             Exam fee collection
                         </a>
@@ -104,7 +104,7 @@
                 if (User.FindFirst("Role").Value == "ExaminationCoordinator")
                 {
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="/University/PublishExamResult" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
                             Publish Exam result
                         </a>
@@ -115,7 +115,7 @@
                 if (User.FindFirst("Role").Value == "ExaminationCoordinator")
                 {
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="/University/PublishDocuments" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
                             Publish Documents
                         </a>
@@ -126,7 +126,7 @@
                 if (User.FindFirst("Role").Value == "Student")
                 {
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="/Student/DownloadDocuments" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
                             Download Documents
                         </a>

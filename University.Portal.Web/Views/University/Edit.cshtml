@@ -1,0 +1,103 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model University.Portal.Data.Data.ViewModels.StudentViewModel;
+
+<form asp-action="Edit" method="post">
+    <div class="container-fluid ps-md-0">
+        <div class="row g-0">
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-8 mx-auto">
+                                <input type="hidden" class="form-control" asp-for="Id"/>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="FirstName" placeholder="First Name" />
+                                    <label asp-for="FirstName">First Name</label>
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="MiddleName" placeholder="Middle Name" />
+                                    <label asp-for="MiddleName">Middle Name</label>
+                                    <span asp-validation-for="MiddleName" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="LastName" placeholder="Last Name" />
+                                    <label asp-for="LastName">Last Name</label>
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select asp-for="GenderId" asp-items="@Model.Gender" class="form-control"></select>
+                                    <label asp-for="GenderId">Gender</label>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" asp-for="Email" placeholder="Email" />
+                                    <label asp-for="Email">Email</label>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-8 mx-auto">
+                                @*<h3 class="login-heading mb-4">Sign up here!</h3>*@
+                                <!-- Sign Up Form -->
+                                @if (Model.IsRegistrationFailed)
+                                {
+                                    <div class="card border-danger mb-3">
+                                        <div class="card-body text-danger">
+                                            <h5 class="card-title">Registration Failed</h5>
+                                            @*<span class="card-text" asp-validation-for=""></span>
+                                        <span class="card-text" asp-validation-for=""></span>*@
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" />
+                                    <label asp-for="PhoneNumber">Phone Number</label>
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="date" asp-for="DOB" class="form-control" placeholder="Date Of Birth" />
+                                    <label asp-for="DOB">Date Of Birth</label>
+                                    <span asp-validation-for="DOB" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="date" asp-for="DOJ" class="form-control" placeholder="Date Of Joining" />
+                                    <label asp-for="DOJ">Date Of Joining</label>
+                                    <span asp-validation-for="DOJ" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select asp-for="DepartmentId" asp-items="@Model.Department" class="form-control"></select>
+                                    <label asp-for="DepartmentId">Department</label>
+                                    <span asp-validation-for="Department" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select asp-for="YearId" asp-items="@Model.Year" class="form-control"></select>
+                                    <label asp-for="YearId">Year</label>
+                                    <span asp-validation-for="Year" class="text-danger"></span>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

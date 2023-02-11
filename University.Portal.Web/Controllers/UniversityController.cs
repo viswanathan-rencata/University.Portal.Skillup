@@ -179,7 +179,7 @@ namespace University.Portal.Web.Controllers
 
         public IActionResult TutionFeeDetails()
         {
-            var list = (from a in _unitOfWork.TutionFeeDetailsRepository
+            var list = (from a in _unitOfWork.FeeDetailsRepository
                         .GetByFilter(x => x.UniversityId == GetUniversityId && x.IsActive == true, IncludeStr: "Department")
                         select new TutionFeeGridModel
                         {
@@ -199,7 +199,7 @@ namespace University.Portal.Web.Controllers
 
             if (id > 0)
             {
-                var tuttionFee = _unitOfWork.TutionFeeDetailsRepository.Get(id);
+                var tuttionFee = _unitOfWork.FeeDetailsRepository.Get(id);
                 model.Id = tuttionFee.Id;
                 model.YearId = Convert.ToString(tuttionFee.Year);
                 model.Amount = tuttionFee.Amount.ToString("0.00");
@@ -212,6 +212,8 @@ namespace University.Portal.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEditTutionFeeDetails(TutionFeeDetailsViewModel model)
         {
+            var tutionFee = new FeeDetails();
+
             if (model.DepartmentId == "0")
             {
                 ModelState.AddModelError("Department", "Please select Department");
@@ -227,8 +229,13 @@ namespace University.Portal.Web.Controllers
 
                 if (model.Id <= 0)
                 {
-                    var tutionFee = new TutionFeeDetails()
+                    var tutionFeeMasterId = _unitOfWork.FeeMasterRepository
+                        .GetByFilter(x => x.FeeType == "TutionFee")
+                        .Select(x => x.Id).FirstOrDefault();
+
+                    tutionFee = new FeeDetails()
                     {
+                        FeeMasterId = tutionFeeMasterId,
                         UniversityId = GetUniversityId,
                         DepartmentId = Convert.ToInt32(model.DepartmentId),
                         Year = Convert.ToInt32(model.YearId),
@@ -237,18 +244,18 @@ namespace University.Portal.Web.Controllers
                         IsActive = true
                     };
 
-                    _unitOfWork.TutionFeeDetailsRepository.Add(tutionFee);
+                    _unitOfWork.FeeDetailsRepository.Add(tutionFee);
                 }
                 else
                 {
-                    var tutionFee = _unitOfWork.TutionFeeDetailsRepository.Get(model.Id);
+                    tutionFee = _unitOfWork.FeeDetailsRepository.Get(model.Id);
                     tutionFee.DepartmentId = Convert.ToInt32(model.DepartmentId);
                     tutionFee.Year = Convert.ToInt32(model.YearId);
                     tutionFee.Amount = Convert.ToDecimal(model.Amount.Replace("₹", ""));
                     tutionFee.DueDate = model.DueDate.Value;
 
-                    _unitOfWork.TutionFeeDetailsRepository.Update(tutionFee);
-                }                
+                    _unitOfWork.FeeDetailsRepository.Update(tutionFee);
+                }
 
                 string message = string.Empty;
                 if (model.Id <= 0)
@@ -262,7 +269,7 @@ namespace University.Portal.Web.Controllers
 
                 TempData["JavaScriptFunction"] = $"showToastrMessage('{message}','');";
 
-                
+                SendTutionFeeNotification(tutionFee);
 
                 if (await _unitOfWork.CompleteAsync()) return RedirectToAction("TutionFeeDetails");
                 else
@@ -360,6 +367,28 @@ namespace University.Portal.Web.Controllers
         }
 
         private int GetUniversityId => Convert.ToInt32(HttpContext.User.FindFirst("UniversityId").Value);
+        private int GetUserId => Convert.ToInt32(HttpContext.User.FindFirst("UserId").Value);
 
+        private void SendTutionFeeNotification(FeeDetails tutionFeeDetails)
+        {
+            List<Notification> notificationList = new();
+
+            var studentIdList = (from a in _unitOfWork.StudentRepository
+                               .GetByFilter(x => x.UniversityId == GetUniversityId && x.Year == tutionFeeDetails.Year && x.DepartmentId == tutionFeeDetails.DepartmentId)
+                                 select a.Id).ToList();
+
+            foreach (var studentId in studentIdList)
+            {
+                var notification = new Notification()
+                {
+                    StudentID = studentId,
+                    StudentOrUniversity = (int)StudentOrUniversity.Student,
+                    Message = $"Tution Fee details published. Amount is {tutionFeeDetails.Amount.ToString("0.00")} and due date is on {tutionFeeDetails.DueDate.ToString("MM/dd/yyyy")}" +
+                              $".<br/> Please pay the total amount on or before due date."
+                };
+
+                _unitOfWork.NotificationRepository.Add(notification);
+            }            
+        }
     }
 }

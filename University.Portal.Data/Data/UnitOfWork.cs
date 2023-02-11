@@ -23,7 +23,10 @@ namespace University.Portal.Data.Data
         public IRepository<UniversityMaster> UniversityRepository => new Repository<UniversityMaster>(_context);
         public IRepository<Department> DepartmentRepository => new Repository<Department>(_context);
         public IRepository<Student> StudentRepository => new Repository<Student>(_context);
-        public IRepository<TutionFeeDetails> TutionFeeDetailsRepository => new Repository<TutionFeeDetails>(_context);
+        public IRepository<FeeDetails> FeeDetailsRepository => new Repository<FeeDetails>(_context);
+        public IRepository<FeeMaster> FeeMasterRepository => new Repository<FeeMaster>(_context);
+        public IRepository<Notification> NotificationRepository => new Repository<Notification>(_context);
+        public IRepository<FeePayment> FeePaymentRepository => new Repository<FeePayment>(_context);
 
         public bool Complete()
 		{

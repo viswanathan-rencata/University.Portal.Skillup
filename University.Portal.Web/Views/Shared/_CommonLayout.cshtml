@@ -19,13 +19,7 @@
     
     <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" asp-append-version="true" />
     <link href="~/lib/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/commonlayout.css" asp-append-version="true" />
-
-    
-
-    
-    
-
+    <link rel="stylesheet" href="~/css/commonlayout.css" asp-append-version="true" /> 
 </head>
 <body>
     <header>
@@ -140,7 +134,7 @@
                 if (User.FindFirst("Role").Value == "Student")
                 {
                     <li>
-                        <a href="/Student/DownloadDocuments" class="nav-link text-white">
+                        <a href="/Student/FeePayment" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
                             Fee Payment
                         </a>
@@ -169,12 +163,29 @@
                     </li>
                 }
             }
-            <li>
-                <a href="/Student/DownloadDocuments" class="nav-link text-white">
-                    @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
-                    Notifications
-                </a>
-            </li>
+            @{
+                if (User.FindFirst("Role").Value == "OfficeAdmin" || User.FindFirst("Role").Value == "ExaminationCoordinator")
+                {
+                    <li>
+                        <a href="/Notification/University" class="nav-link text-white">
+                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            Notifications
+                        </a>
+                    </li>
+                }
+            }
+            @{
+                if (User.FindFirst("Role").Value == "Student")
+                {
+                    <li>
+                        <a href="/Notification/Student" class="nav-link text-white">
+                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            Notifications
+                        </a>
+                    </li>
+                }
+            }
+            
 
         </ul>
     </div>

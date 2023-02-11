@@ -1,0 +1,67 @@
+﻿@using University.Portal.Data.Data.ViewModels;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<FeePaymentViewModel>;
+
+@{
+    if (Model != null && Model.Count() > 0)
+    {
+        <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
+            <thead>
+                <tr>
+                    <th data-field="FeeType" data-filter-control="input">FeeType</th>
+                    <th data-field="Amount" data-filter-control="input">Amount</th>
+                    <th data-field="Due Date" data-filter-control="input">Due Date</th>
+                    <th colspan="1" data-field="Action">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.FeeType</th>
+                        <td>@item.Amount.ToString("0.00")</td>
+                        <td>@item.DueDate.ToString("MM/dd/yyyy")</td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-evenly">
+                                <a asp-action="Payment" asp-route-id=@item.Id class="btn btn-primary gridbtn">Make Payment</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="table table-bordered" style="margin-top:50px">
+            <thead>
+                <tr>
+                    <th>FeeType</th>
+                    <th>Amount</th>
+                    <th>Due Date</th>                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="3" class="text-center">No Records Found!</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+}
+
+<div style="float:right">
+    <h3>Total Records (@Model.Count())</h3>
+</div>
+
+<script>
+    $(function () {
+        $('#table').bootstrapTable();
+        $('.fixed-table-loading').remove();
+    });
+</script>

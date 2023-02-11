@@ -17,7 +17,10 @@ namespace University.Portal.Data.Data
         public DbSet<Department> Department { get; set; }
         public DbSet<Student> Student { get; set; }
         public DbSet<UniversityMaster> University { get; set; }
-        public DbSet<TutionFeeDetails> TutionFeeDetails { get; set; }
+        public DbSet<FeeDetails> FeeDetails { get; set; }
+        public DbSet<FeeMaster> FeeMaster { get; set; }
+        public DbSet<Notification> Notification { get; set; }
+        public DbSet<FeePayment> FeePayment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,11 +46,26 @@ namespace University.Portal.Data.Data
             modelBuilder.Entity<Student>()
                 .HasOne(p => p.University);
 
-            modelBuilder.Entity<TutionFeeDetails>()
+            modelBuilder.Entity<FeeDetails>()
                 .HasOne(p => p.University);
             
-            modelBuilder.Entity<TutionFeeDetails>()
+            modelBuilder.Entity<FeeDetails>()
                 .HasOne(p => p.Department);
+            
+            modelBuilder.Entity<FeeDetails>()
+                .HasOne(p => p.FeeMaster);
+
+            modelBuilder.Entity<Notification>()
+                .HasOne(p => p.Student);
+            
+            modelBuilder.Entity<Notification>()
+                .HasOne(p => p.University);
+
+            modelBuilder.Entity<FeePayment>()
+                .HasOne(p => p.FeeDetails);
+            
+            modelBuilder.Entity<FeePayment>()
+                .HasOne(p => p.Student);
         }
     }
 }

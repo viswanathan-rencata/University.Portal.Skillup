@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace University.Portal.Data.Data.Models
 {
-    [Table("TutionFeeDetails", Schema = "UniversityPortal")]
-    public class TutionFeeDetails
+    [Table("FeeDetails", Schema = "UniversityPortal")]
+    public class FeeDetails
     {
         [Key, Column("ID", Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -17,7 +17,10 @@ namespace University.Portal.Data.Data.Models
         
         [Column("UniversityId")]
         public int UniversityId { get; set; }
-        
+
+        [Column("FeeMasterId")]
+        public int FeeMasterId { get; set; }
+
         [Column("DepartmentId")]
         public int DepartmentId { get; set; }
 
@@ -37,5 +40,6 @@ namespace University.Portal.Data.Data.Models
         public bool IsActive { get; set; }
         public UniversityMaster University { get; set; }
         public Department Department { get; set; }
+        public FeeMaster FeeMaster { get; set; }
     }
 }

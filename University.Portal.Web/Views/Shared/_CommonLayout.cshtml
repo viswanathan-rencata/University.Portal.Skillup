@@ -8,8 +8,24 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="~/lib/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    
+    <script src="~/lib/toastr.js/toastr.min.js"></script>
+    
+    <script src="~/js/commonlayout.js"></script>
+    
+    <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" asp-append-version="true" />
+    <link href="~/lib/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/commonlayout.css" asp-append-version="true" />
+
+    
+
+    
+    
+
 </head>
 <body>
     <header>
@@ -22,10 +38,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             @{
-                                if (User.FindFirst("StudentOrUniversity").Value == "1")
-                                {
-                                    <h1 class="nav-link active" style="text-align:center">@User.FindFirst("UniversityName").Value</h1>
-                                }
+                                <h1 class="nav-link active" style="text-align:center">@User.FindFirst("UniversityName").Value</h1>
                             }                            
                         </li>
                     </ul>
@@ -33,6 +46,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @User.Identity.Name
+                                <br /><span>@User.FindFirst("Role").Value</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -73,7 +87,7 @@
                     <li>
                         <a href="/University/TutionFeeDetails" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>*@
-                            Tution Fee notification
+                            Tution Fee Details
                         </a>
                     </li>
                 }
@@ -84,7 +98,7 @@
                     <li>
                         <a href="/University/ExamScheduleNotification" class="nav-link text-white">
                             @* <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>*@
-                            Exam Schedule notification
+                            Exam Schedule Details
                         </a>
                     </li>
                 }
@@ -95,7 +109,7 @@
                     <li>
                         <a href="/University/ExamFeeCollection" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>*@
-                            Exam fee collection
+                            Fee Details
                         </a>
                     </li>
                 }
@@ -106,7 +120,7 @@
                     <li>
                         <a href="/University/PublishExamResult" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
-                            Publish Exam result
+                            Publish Exam Result
                         </a>
                     </li>
                 }
@@ -128,11 +142,39 @@
                     <li>
                         <a href="/Student/DownloadDocuments" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            Fee Payment
+                        </a>
+                    </li>
+                }
+            }
+            @{
+                if (User.FindFirst("Role").Value == "Student")
+                {
+                    <li>
+                        <a href="/Student/DownloadDocuments" class="nav-link text-white">
+                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            View Results
+                        </a>
+                    </li>
+                }
+            }
+            @{
+                if (User.FindFirst("Role").Value == "Student")
+                {
+                    <li>
+                        <a href="/Student/DownloadDocuments" class="nav-link text-white">
+                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
                             Download Documents
                         </a>
                     </li>
                 }
             }
+            <li>
+                <a href="/Student/DownloadDocuments" class="nav-link text-white">
+                    @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                    Notifications
+                </a>
+            </li>
 
         </ul>
     </div>
@@ -160,9 +202,45 @@
         </div>
     </div>
 
+    <script type="text/javascript">
+        function showToastrMessage(message, title) {
+            var options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            toastr.success(message, title, options)
+        };
+    </script>
+    @if (ViewBag.JavaScriptFunction != null)
+    {
+        <script type="text/javascript">
+            @Html.Raw(ViewBag.JavaScriptFunction)
+        </script>
+    }
+    else if (TempData["JavaScriptFunction"] != null)
+    {
+        <script type="text/javascript">
+            @Html.Raw(TempData["JavaScriptFunction"])
+        </script>
+    }
+
     <footer class="border-top footer text-muted bg-dark">
         <div class="container">
             &copy; 2023 - University Portal (Skillup) - <a asp-area="" asp-controller="" asp-action="">Privacy</a>
+            <h5 style="float:right; margin-top:12px">@DateTime.Now.ToString("dd/MM/yyyy")</h5>
         </div>
     </footer>
 </body>

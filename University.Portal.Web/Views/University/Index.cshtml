@@ -1,4 +1,6 @@
 ﻿@using University.Portal.Data.Data.ViewModels;
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -9,72 +11,108 @@
 @model IEnumerable<StudentGridModel>;
 
 @{
-	if (Model != null && Model.Count() > 0)
-	{
-		<table class="table table-bordered" style="margin-top:50px">
-			<thead>
-				<tr>
-					<th>Student Code</th>
-					<th>Name</th>					
-					<th>Gender</th>
-					<th>Email</th>
-					<th>Phone Number</th>
-					<th>Date Of Birth</th>
-					<th>Date of Joining</th>
-					<th>Department</th>
-					<th>Year</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
-					<tr>
-						<th scope="row">@item.StudentCode</th>
-						<td>@item.FullName</td>
-						<td>@item.Gender</td>
-						<td>@item.Email</td>
-						<td>@item.PhoneNumber</td>
-						<td>@item.DateOfBirth</td>
-						<td>@item.DateOfJoining</td>
-						<td>@item.DepartmentName</td>
-						<td>@item.Year</td>
-						<td>
-							<a asp-action="Edit" asp-route-id=@item.Id class="btn btn-primary">Edit</a>
-						</td>
-					</tr>
-				}
-			</tbody>
-		</table>
-	}
-	else
-	{
-		<table class="table table-bordered" style="margin-top:50px">
-			<thead>
-				<tr>
-					<th>Student Code</th>
-					<th>Name</th>					
-					<th>Gender</th>
-					<th>Email</th>
-					<th>Phone Number</th>
-					<th>Date Of Birth</th>
-					<th>Date of Joining</th>
-					<th>Department</th>
-					<th>Year</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td colspan="9" class="text-center">No Records Found!</td>
-				</tr>
-			</tbody>
-		</table>
-	}
+    if (Model != null && Model.Count() > 0)
+    {
+        <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
+            <thead>
+                <tr>
+                    <th data-field="Code" data-filter-control="input">Code</th>
+                    <th data-field="Name" data-filter-control="input">Name</th>
+                    <th data-field="Gender" data-filter-control="select">Gender</th>
+                    <th data-field="Email" data-filter-control="input">Email</th>
+                    <th data-field="Phone Number" data-filter-control="input">Phone Number</th>
+                    <th data-field="Date of Birth" data-filter-control="input">Date of Birth</th>
+                    <th data-field="Date of Joining" data-filter-control="input">Date of Joining</th>
+                    <th data-field="Department" data-filter-control="select">Department</th>
+                    <th data-field="Class" data-filter-control="input">Class</th>
+                    @{
+                        if (User.FindFirst("Role").Value == "OfficeAdmin")
+                        {
+                            <th colspan="1" data-field="Action">Action</th>
+                        }
+                    }
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.StudentCode</th>
+                        <td>@item.FullName</td>
+                        <td>@item.Gender</td>
+                        <td>@item.Email</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.DateOfBirth</td>
+                        <td>@item.DateOfJoining</td>
+                        <td>@item.DepartmentName</td>
+                        <td>@item.Year</td>
+                        @{
+                            if (User.FindFirst("Role").Value == "OfficeAdmin")
+                            {
+                                <td>
+                                    <div class="d-flex align-items-center justify-content-evenly">
+                                        <a asp-action="Create" asp-route-id=@item.Id class="btn btn-primary gridbtn">Edit</a>
+                                        <a asp-action="Delete" asp-route-id=@item.Id class="btn btn-danger gridbtn">Delete</a>
+                                    </div>
+
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="table table-bordered" style="margin-top:50px">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Date of Birth</th>
+                    <th>Date of Joining</th>
+                    <th>Department</th>
+                    <th>Class</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="9" class="text-center">No Records Found!</td>
+                </tr>
+            </tbody>
+        </table>
+    }
 }
 
-<input type="button" value="Add Student" class="btn btn-primary mt-5" style="float:right" onclick="@("window.location.href='" + @Url.Action("Create", "University") + "'");" />
+<div style="float:right">
+    <h3>Total Students (@Model.Count())</h3>
+    @{
+        if (User.FindFirst("Role").Value == "OfficeAdmin")
+        {
+            <input type="button" value="Add Student" class="btn btn-primary mt-5" style="float:right" onclick="@("window.location.href='" + @Url.Action("Create", "University") + "'");" />
+        }
+    }
 
-<style type="text/css">
-	a.btn {border-radius: .25rem; border: 1px solid transparent; padding: .5rem 1rem; color: #fff; }
-	a.btn { border-radius: .25rem; }
-</style>
+</div>
+
+<script>
+    $(function () {
+        $('#table').bootstrapTable();
+        $('.fixed-table-loading').remove();
+        $('th[data-field="Code"]').css('width', '10%');
+        $('th[data-field="Name"]').css('width', '12%');
+        $('th[data-field="Gender"]').css('width', '10%');
+        $('th[data-field="Email"]').css('width', '10%');
+        $('th[data-field="Phone Number"]').css('width', '15%');
+        $('th[data-field="Date of Birth"]').css('width', '12%');
+        $('th[data-field="Date of Joining"]').css('width', '15%');
+        $('th[data-field="Department"]').css('width', '12%');
+        $('th[data-field="Class"]').css('width', '30%');
+        //$('th[data-field="Action"]').css('width', '10%');
+    })
+</script>

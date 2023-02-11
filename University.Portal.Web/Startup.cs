@@ -19,9 +19,11 @@ namespace University.Portal.Web
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddDbContext<AppDBContext>(options =>
-				options.UseSqlServer(
+			options.UseSqlServer(
 				Configuration.GetConnectionString("DefaultConnection"),
-				b => b.MigrationsAssembly(typeof(AppDBContext).Assembly.FullName)));
+				b => b.MigrationsAssembly(typeof(AppDBContext).Assembly.FullName).EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)					
+				)
+			);
 
 			services.AddMemoryCache();			
 			services.AddApplicationServices();			

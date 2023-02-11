@@ -17,6 +17,7 @@ namespace University.Portal.Data.Data
         public DbSet<Department> Department { get; set; }
         public DbSet<Student> Student { get; set; }
         public DbSet<UniversityMaster> University { get; set; }
+        public DbSet<TutionFeeDetails> TutionFeeDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +42,12 @@ namespace University.Portal.Data.Data
 
             modelBuilder.Entity<Student>()
                 .HasOne(p => p.University);
+
+            modelBuilder.Entity<TutionFeeDetails>()
+                .HasOne(p => p.University);
+            
+            modelBuilder.Entity<TutionFeeDetails>()
+                .HasOne(p => p.Department);
         }
     }
 }

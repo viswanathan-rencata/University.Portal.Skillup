@@ -176,7 +176,7 @@ namespace University.Portal.Web.Controllers
             if (ModelState.IsValid)
             {
                 var userList = await _unitOfWork.UserRepository.GetByFilterAsync(x => x.UserName == model.UserName
-                                                && x.StudentOrUniversity == (int)StudentOrUniversity.Student, IncludeStr: "Student");
+                                                && x.StudentOrUniversity == (int)StudentOrUniversity.Student, IncludeStr: "Student,University");
                 var user = userList.FirstOrDefault();
 
                 if (user == null)
@@ -211,7 +211,8 @@ namespace University.Portal.Web.Controllers
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim("UserId", user.Id.ToString()),
                     new Claim("StudentOrUniversity", user.StudentOrUniversity.ToString()),
-                    new Claim("StudentId", user.StudentId.ToString()),                    
+                    new Claim("StudentId", user.StudentId.ToString()),
+                    new Claim("UniversityName", user?.University?.UniversityName),
                     new Claim("Role", "Student")
                 };
 

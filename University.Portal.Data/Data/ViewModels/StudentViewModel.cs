@@ -14,14 +14,14 @@ namespace University.Portal.Data.Data.ViewModels
 	{		
 		public int Id { get; set; }
 		
-		[Required(ErrorMessage = "First Name is required.")]
+		[Required(ErrorMessage = "First Name is required")]
         [StringLength(20, ErrorMessage = "Must be between 3 and 20 characters", MinimumLength = 3)]
 		public string FirstName { get; set; }
 		
-		[StringLength(5, ErrorMessage = "Must be between 3 and 5 characters", MinimumLength = 3)]
+		[StringLength(10, ErrorMessage = "Must be between 1 and 10 characters", MinimumLength = 1)]
 		public string MiddleName { get; set; }
 		
-		[StringLength(10, ErrorMessage = "Must be between 3 and 10 characters", MinimumLength = 3)]
+		[StringLength(10, ErrorMessage = "Must be between 1 and 10 characters", MinimumLength = 1)]
 		public string LastName { get; set; }
 		public IEnumerable<SelectListItem> Gender { get; set; }
 
@@ -32,7 +32,7 @@ namespace University.Portal.Data.Data.ViewModels
 		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
 
-		[Required(ErrorMessage = "PhoneNumber is required")]
+		[Required(ErrorMessage = "Phone Number is required")]
 		[DataType(DataType.PhoneNumber)]
 		[StringLength(10, ErrorMessage = "Must be 10 digits", MinimumLength = 10)]
 		[RegularExpression(@"^\d+$", ErrorMessage = "Input should contain only numbers")]
@@ -51,7 +51,7 @@ namespace University.Portal.Data.Data.ViewModels
 
         public IEnumerable<SelectListItem> Year { get; set; }
 
-        [Required(ErrorMessage = "Year is required")]
+        [Required(ErrorMessage = "Class is required")]
         public string YearId { get; set; }
 
         public bool IsRegistrationFailed { get; set; }

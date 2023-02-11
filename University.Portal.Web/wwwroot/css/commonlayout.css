@@ -175,3 +175,15 @@ div.content {
 }
 
 /*Side bar*/
+
+
+a.gridbtn {
+    border-radius: .25rem;
+    border: 1px solid transparent;
+    padding: .5rem 1rem;
+    color: #fff;
+}
+
+a.gridbtn {
+    border-radius: .25rem;
+}

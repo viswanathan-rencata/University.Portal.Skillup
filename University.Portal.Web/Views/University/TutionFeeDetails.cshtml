@@ -4,3 +4,72 @@
 @{
     Layout = "_CommonLayout";
 }
+
+@model IEnumerable<University.Portal.Data.Data.ViewModels.TutionFeeGridModel>;
+
+@{
+    if (Model != null && Model.Count() > 0)
+    {
+        <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
+            <thead>
+                <tr>
+                    <th data-field="DepartmentName" data-filter-control="input">DepartmentName</th>
+                    <th data-field="Class" data-filter-control="input">Class</th>
+                    <th data-field="Amount" data-filter-control="input">Amount</th>
+                    <th data-field="Due Date" data-filter-control="input">Due Date</th>
+                    <th colspan="1" data-field="Action">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.DepartmentName</th>
+                        <td>@item.Year</td>
+                        <td>₹@item.Amount.ToString("0.00")</td>
+                        <td>@item.DueDate.ToString("MM/dd/yyyy")</td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-evenly">
+                                <a asp-action="AddEditTutionFeeDetails" asp-route-id=@item.Id class="btn btn-primary gridbtn">Edit</a>
+                                <a asp-action="Delete" asp-route-id=@item.Id class="btn btn-danger gridbtn">Delete</a>
+                                <a asp-action="Delete" asp-route-id=@item.Id class="btn btn-info gridbtn">View Payment Details</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="table table-bordered" style="margin-top:50px">
+            <thead>
+                <tr>
+                    <th>DepartmentName</th>
+                    <th>Class</th>
+                    <th>Amount</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4" class="text-center">No Records Found!</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+}
+
+<div style="float:right">
+    <h3>Total Records (@Model.Count())</h3>
+    <input type="button" value="Add Tution Fee" class="btn btn-primary mt-5" style="float:right" onclick="@("window.location.href='" + @Url.Action("AddEditTutionFeeDetails", "University") + "'");" />
+
+</div>
+
+<script>
+    $(function () {
+        $('#table').bootstrapTable();
+        $('.fixed-table-loading').remove();        
+    })
+</script>

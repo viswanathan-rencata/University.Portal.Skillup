@@ -17,6 +17,7 @@ namespace University.Portal.Data.Interface
         IRepository<AppUserRole> AppUserRoleRepository { get; }
         IRepository<Department> DepartmentRepository { get; }
         IRepository<Student> StudentRepository { get; }
+        IRepository<TutionFeeDetails> TutionFeeDetailsRepository { get; }
         Task<bool> CompleteAsync();
 		bool Complete();
 		bool HasChanges();

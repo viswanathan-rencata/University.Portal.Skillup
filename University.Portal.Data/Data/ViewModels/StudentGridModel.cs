@@ -20,6 +20,6 @@ namespace University.Portal.Data.Data.ViewModels
 		public string DateOfBirth { get; set; }
 		public string DateOfJoining { get; set; }
 		public string DepartmentName { get; set; }
-		public int Year { get; set; }
+		public string Year { get; set; }
 	}
 }

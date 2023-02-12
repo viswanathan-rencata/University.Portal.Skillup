@@ -1,10 +1,10 @@
-﻿@*
+﻿@using University.Portal.Data.Data.ViewModels;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
-
-@model University.Portal.Data.Data.ViewModels.FeeDetailsViewModel;
+@model ExamScheduleViewModel;
 
 <form method="post">
     <div class="container-fluid ps-md-0">
@@ -16,24 +16,25 @@
                             <div class="col-md-9 col-lg-8 mx-auto">
                                 <input type="hidden" class="form-control" asp-for="Id" />
                                 <div class="form-floating mb-3">
-                                    <select asp-for="YearId" asp-items="@Model.Year" class="form-control"></select>
-                                    <label asp-for="YearId">Class</label>
-                                    <span asp-validation-for="Year" class="text-danger"></span>
-                                </div>
-                                <div class="form-floating mb-3">
                                     <select asp-for="DepartmentId" asp-items="@Model.Department" class="form-control"></select>
                                     <label asp-for="DepartmentId">Class</label>
                                     <span asp-validation-for="Department" class="text-danger"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" asp-for="Amount" data-type="currency" placeholder="Amount" />
-                                    <label asp-for="Amount">Amount</label>
-                                    <span asp-validation-for="Amount" class="text-danger"></span>
+                                    <select asp-for="YearId" asp-items="@Model.Year" class="form-control"></select>
+                                    <label asp-for="YearId">Class</label>
+                                    <span asp-validation-for="Year" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" asp-for="StartDate" placeholder="Start Date" />
+                                    <label asp-for="StartDate">Start Date</label>
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" asp-for="DueDate" placeholder="Due Date" />
-                                    <label asp-for="DueDate">Due Date</label>
-                                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                                    <input type="date" class="form-control" asp-for="EndDate" placeholder="End Date" />
+                                    <label asp-for="EndDate">End Date</label>
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
                                 </div>
                                 <div class="d-grid">
                                     @{
@@ -46,7 +47,7 @@
                                             <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Update</button>
                                         }
                                     }
-                                    <button class="btn btn-lg btn-info btn-login text-uppercase fw-bold mb-2" type="button" onclick="@("window.location.href='" + @Url.Action("TutionFeeDetails", "University") + "'");">Go Back</button>
+                                    <button class="btn btn-lg btn-info btn-login text-uppercase fw-bold mb-2" type="button" onclick="@("window.location.href='" + @Url.Action("ExamSchedule", "University") + "'");">Go Back</button>
                                 </div>
                             </div>
                         </div>
@@ -56,16 +57,3 @@
         </div>
     </div>
 </form>
-
-<script type="text/javascript">
-    $(function(){
-
-        if($('#Id').val() == '0'){
-            $("input[data-type='currency']").val("₹0.00");
-        }else{
-            $("input[data-type='currency']").val('₹' + $('#Amount').val());
-        }
-
-        
-    })
-</script>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace University.Portal.Data.Data.ViewModels
 {
-    public class TutionFeeDetailsViewModel
+    public class FeeDetailsViewModel
     {
         public int Id { get; set; }
 

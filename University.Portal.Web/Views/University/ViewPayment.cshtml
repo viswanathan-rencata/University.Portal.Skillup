@@ -1,39 +1,38 @@
-﻿@using University.Portal.Data.Data.ViewModels;
-@*
+﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    Layout = "_CommonLayout";
 }
-
-@model IEnumerable<PublishDocumentViewModel>;
+@model IEnumerable<University.Portal.Data.Data.ViewModels.PendingPaymentViewModel>;
 
 @{
     if (Model != null && Model.Count() > 0)
     {
-        <table id="table1" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
+        <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
             <thead>
                 <tr>
+                    <th data-field="Student Code" data-filter-control="input">Student Code</th>
                     <th data-field="Student Name" data-filter-control="input">Student Name</th>
                     <th data-field="Department" data-filter-control="input">Department</th>
-                    <th data-field="Class" data-filter-control="input">Class</th>
-                    <th data-field="Document" data-filter-control="input">Document</th>
+                    <th data-field="Due Date" data-filter-control="input">Due Date</th>
+                    <th data-field="Amount" data-filter-control="input">Amount</th>
                     <th colspan="1" data-field="Action">Action</th>
-
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <th scope="row">@item.StudentName</th>
+                        <th scope="row">@item.StudentCode</th>
+                        <td>@item.StudentName</td>
                         <td>@item.Department</td>
-                        <td>@item.Class</td>
-                        <td>@item.Document</td>
+                        <td>@item.DueDate.ToString("MM/dd/yyyy")</td>
+                        <td>₹@item.Amount.ToString("0.00")</td>
                         <td>
                             <div class="d-flex align-items-center justify-content-evenly">
-                                <a asp-action="PublishDocument" asp-route-id=@item.Id asp-route-documentId=@item.DocumentId class="btn btn-primary gridbtn">Publish Document</a>
+                                <a asp-action="SendReminder" asp-route-id=@item.StudentId class="btn btn-primary gridbtn">Send Reminder</a>                                
                             </div>
+
                         </td>
                     </tr>
                 }
@@ -45,15 +44,16 @@
         <table class="table table-bordered" style="margin-top:50px">
             <thead>
                 <tr>
+                    <th>Student Code</th>
                     <th>Student Name</th>
                     <th>Department</th>
-                    <th>Class</th>
-                    <th>Document</th>
+                    <th>Due Date</th>
+                    <th>Amount</th>                    
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="4" class="text-center">No Records Found!</td>
+                    <td colspan="9" class="text-center">No Records Found!</td>
                 </tr>
             </tbody>
         </table>
@@ -66,7 +66,7 @@
 
 <script>
     $(function () {
-        $('#table1').bootstrapTable();
+        $('#table').bootstrapTable();
         $('.fixed-table-loading').remove();
     })
 </script>

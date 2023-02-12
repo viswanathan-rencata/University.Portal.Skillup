@@ -21,6 +21,10 @@ namespace University.Portal.Data.Interface
         IRepository<Notification> NotificationRepository { get; }
         IRepository<FeeMaster> FeeMasterRepository { get; }
         IRepository<FeePayment> FeePaymentRepository { get; }
+        IRepository<ExamSchedule> ExamScheduleRepository { get; }
+        IRepository<ExamResult> ExamResultRepository { get; }
+        IRepository<DocumentMaster> DocumentMasterRepository { get; }
+        IRepository<StudentDocument> StudentDocumentRepository { get; }
         Task<bool> CompleteAsync();
 		bool Complete();
 		bool HasChanges();

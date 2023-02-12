@@ -17,6 +17,10 @@
     });
 
     $('#univ-sign-in').click(function () {
+
+        $('#univ-sign-in')[0].innerHTML = '<i class="fa fa-refresh fa-spin"></i> Signing In';
+        $('#univ-sign-in').addClass('disabled');
+
         $('#loginValidation').hide();
         var myData = $('#univ-sign-in-form').serialize();
         $.ajax({
@@ -27,10 +31,12 @@
             dataType: "html",
             success: function (response) {
                 if (response == '"Success"') {
-                    window.location.href = '/University/Index'
+                    window.location.href = '/University/Index';
                 } else {
                     $('#loginValidation').show();
                     $('#loginFailed').text(response);
+                    $('#univ-sign-in')[0].innerHTML = '<i class="fa fa-refresh fa-spin"></i> Signing In';
+                    $('#univ-sign-in').addClass('disabled');
                 }
                 
             },
@@ -44,6 +50,10 @@
     });
 
     $('#stud-sign-in').click(function () {
+
+        $('#stud-sign-in')[0].innerHTML = '<i class="fa fa-refresh fa-spin"></i> Signing In';
+        $('#stud-sign-in').addClass('disabled');
+
         $('#loginValidation1').hide();
         var myData = $('#stud-sign-in-form').serialize();
         $.ajax({
@@ -54,12 +64,13 @@
             dataType: "html",
             success: function (response) {
                 if (response == '"Success"') {
-                    window.location.href = '/Student/Index'
+                    window.location.href = '/Student/FeePayment';
                 } else {
                     $('#loginValidation1').show();
                     $('#loginFailed1').text(response);
+                    $('#stud-sign-in')[0].innerHTML = 'Sign In';
+                    $('#stud-sign-in').removeClass('disabled');
                 }
-
             },
             failure: function (response) {
                 alert(response.responseText);

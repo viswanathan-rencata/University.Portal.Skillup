@@ -1,39 +1,39 @@
-﻿@*
+﻿@using University.Portal.Data.Data.ViewModels;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     Layout = "_CommonLayout";
 }
 
-@model IEnumerable<University.Portal.Data.Data.ViewModels.FeeGridModel>;
+@model IEnumerable<ExamScheduleListViewModel>;
 
 @{
     if (Model != null && Model.Count() > 0)
     {
-        <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
+        <table id="table1" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
             <thead>
                 <tr>
-                    <th data-field="DepartmentName" data-filter-control="input">DepartmentName</th>
+                    <th data-field="Department" data-filter-control="input">Department</th>
                     <th data-field="Class" data-filter-control="input">Class</th>
-                    <th data-field="Amount" data-filter-control="input">Amount</th>
-                    <th data-field="Due Date" data-filter-control="input">Due Date</th>
+                    <th data-field="Start Date" data-filter-control="input">Start Date</th>
+                    <th data-field="End Date" data-filter-control="input">End Date</th>
                     <th colspan="1" data-field="Action">Action</th>
-
+                    
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <th scope="row">@item.DepartmentName</th>
+                        <th scope="row">@item.Department</th>
                         <td>@item.Year</td>
-                        <td>₹@item.Amount.ToString("0.00")</td>
-                        <td>@item.DueDate.ToString("MM/dd/yyyy")</td>
+                        <td>@item.StartDate.ToString("MM/dd/yyyy")</td>
+                        <td>@item.EndDate.ToString("MM/dd/yyyy")</td>
                         <td>
                             <div class="d-flex align-items-center justify-content-evenly">
-                                <a asp-action="AddEditTutionFeeDetails" asp-route-id=@item.Id class="btn btn-primary gridbtn">Edit</a>
+                                <a asp-action="AddEditExamSchedule" asp-route-id=@item.Id class="btn btn-primary gridbtn">Edit</a>
                                 <a asp-action="Delete" asp-route-id=@item.Id class="btn btn-danger gridbtn">Delete</a>
-                                <a asp-action="ViewPayment" asp-route-id=@item.Id class="btn btn-info gridbtn">View Payment Details</a>
                             </div>
                         </td>
                     </tr>
@@ -46,10 +46,10 @@
         <table class="table table-bordered" style="margin-top:50px">
             <thead>
                 <tr>
-                    <th>DepartmentName</th>
+                    <th>Department</th>
                     <th>Class</th>
-                    <th>Amount</th>
-                    <th>Due Date</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,13 +63,12 @@
 
 <div style="float:right">
     <h3>Total Records (@Model.Count())</h3>
-    <input type="button" value="Add Tution Fee" class="btn btn-primary mt-5" style="float:right" onclick="@("window.location.href='" + @Url.Action("AddEditTutionFeeDetails", "University") + "'");" />
-
+    <input type="button" value="Add Exam Schedule" class="btn btn-primary mt-5" style="float:right" onclick="@("window.location.href='" + @Url.Action("AddEditExamSchedule", "University") + "'");" />
 </div>
 
 <script>
     $(function () {
-        $('#table').bootstrapTable();
-        $('.fixed-table-loading').remove();        
+        $('#table1').bootstrapTable();
+        $('.fixed-table-loading').remove();
     })
 </script>

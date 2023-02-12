@@ -3,7 +3,6 @@
 *@
 @{
 }
-
 @model University.Portal.Data.Data.ViewModels.FeeDetailsViewModel;
 
 <form method="post">
@@ -46,7 +45,7 @@
                                             <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Update</button>
                                         }
                                     }
-                                    <button class="btn btn-lg btn-info btn-login text-uppercase fw-bold mb-2" type="button" onclick="@("window.location.href='" + @Url.Action("TutionFeeDetails", "University") + "'");">Go Back</button>
+                                    <button class="btn btn-lg btn-info btn-login text-uppercase fw-bold mb-2" type="button" onclick="@("window.location.href='" + @Url.Action("ExamFeeDetails", "University") + "'");">Go Back</button>
                                 </div>
                             </div>
                         </div>
@@ -58,14 +57,14 @@
 </form>
 
 <script type="text/javascript">
-    $(function(){
+    $(function () {
 
-        if($('#Id').val() == '0'){
+        if ($('#Id').val() == '0') {
             $("input[data-type='currency']").val("₹0.00");
-        }else{
+        } else {
             $("input[data-type='currency']").val('₹' + $('#Amount').val());
         }
 
-        
+
     })
 </script>

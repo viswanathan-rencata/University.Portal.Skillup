@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model University.Portal.Data.Data.ViewModels.ExamResultViewModel;
+
+<form method="post">
+    <div class="container-fluid ps-md-0">
+        <div class="row g-0">
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-8 mx-auto">
+                                <input type="hidden" class="form-control" asp-for="Id" />
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" asp-for="CGPA" placeholder="CGPA" />
+                                    <label asp-for="CGPA">CGPA</label>
+                                    <span asp-validation-for="CGPA" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select asp-for="ResultId" asp-items="@Model.Result" class="form-control"></select>
+                                    <label asp-for="ResultId">ResultId</label>
+                                    <span asp-validation-for="Result" class="text-danger"></span>
+                                </div>                                
+                                <div class="d-grid">
+                                    @{
+                                        if (Model.Id <= 0)
+                                        {
+                                            <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Create</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Update</button>
+                                        }
+                                    }
+                                    <button class="btn btn-lg btn-info btn-login text-uppercase fw-bold mb-2" type="button" onclick="@("window.location.href='" + @Url.Action("ExamFeeDetails", "University") + "'");">Go Back</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

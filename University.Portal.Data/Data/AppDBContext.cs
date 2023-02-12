@@ -21,6 +21,10 @@ namespace University.Portal.Data.Data
         public DbSet<FeeMaster> FeeMaster { get; set; }
         public DbSet<Notification> Notification { get; set; }
         public DbSet<FeePayment> FeePayment { get; set; }
+        public DbSet<ExamSchedule> ExamSchedule { get; set; }
+        public DbSet<ExamResult> ExamResult { get; set; }
+        public DbSet<DocumentMaster> DocumentMaster { get; set; }
+        public DbSet<StudentDocument> StudentDocument { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -66,6 +70,22 @@ namespace University.Portal.Data.Data
             
             modelBuilder.Entity<FeePayment>()
                 .HasOne(p => p.Student);
+
+            modelBuilder.Entity<ExamSchedule>()
+                .HasOne(p => p.Department);
+            
+            modelBuilder.Entity<ExamSchedule>()
+                .HasOne(p => p.University);
+
+            modelBuilder.Entity<ExamResult>()
+                .HasOne(p => p.Student);
+
+            modelBuilder.Entity<StudentDocument>()
+                .HasOne(p => p.Student);
+
+            modelBuilder.Entity<StudentDocument>()
+                .HasOne(p => p.DocumentMaster);
+
         }
     }
 }

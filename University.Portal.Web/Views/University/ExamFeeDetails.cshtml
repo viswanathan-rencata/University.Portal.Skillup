@@ -4,7 +4,6 @@
 @{
     Layout = "_CommonLayout";
 }
-
 @model IEnumerable<University.Portal.Data.Data.ViewModels.FeeGridModel>;
 
 @{
@@ -31,7 +30,7 @@
                         <td>@item.DueDate.ToString("MM/dd/yyyy")</td>
                         <td>
                             <div class="d-flex align-items-center justify-content-evenly">
-                                <a asp-action="AddEditTutionFeeDetails" asp-route-id=@item.Id class="btn btn-primary gridbtn">Edit</a>
+                                <a asp-action="AddEditExamFeeDetails" asp-route-id=@item.Id class="btn btn-primary gridbtn">Edit</a>
                                 <a asp-action="Delete" asp-route-id=@item.Id class="btn btn-danger gridbtn">Delete</a>
                                 <a asp-action="ViewPayment" asp-route-id=@item.Id class="btn btn-info gridbtn">View Payment Details</a>
                             </div>
@@ -63,13 +62,13 @@
 
 <div style="float:right">
     <h3>Total Records (@Model.Count())</h3>
-    <input type="button" value="Add Tution Fee" class="btn btn-primary mt-5" style="float:right" onclick="@("window.location.href='" + @Url.Action("AddEditTutionFeeDetails", "University") + "'");" />
+    <input type="button" value="Add Exam Fee" class="btn btn-primary mt-5" style="float:right" onclick="@("window.location.href='" + @Url.Action("AddEditExamFeeDetails", "University") + "'");" />
 
 </div>
 
 <script>
     $(function () {
         $('#table').bootstrapTable();
-        $('.fixed-table-loading').remove();        
+        $('.fixed-table-loading').remove();
     })
 </script>

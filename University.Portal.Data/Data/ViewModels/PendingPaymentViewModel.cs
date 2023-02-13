@@ -14,5 +14,8 @@ namespace University.Portal.Data.Data.ViewModels
         public string Department { get; set;}
         public DateTime DueDate { get; set; }
         public decimal Amount { get; set; }
+        public bool IsPaymentCompleted { get; set; }
+        public string PaymentDate { get; set; }
+        public string FeeType { get; set; }
     }
 }

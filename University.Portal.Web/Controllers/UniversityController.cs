@@ -290,25 +290,30 @@ namespace University.Portal.Web.Controllers
         {
             List<PendingPaymentViewModel> model = new();
 
-            var feeDetails = _unitOfWork.FeeDetailsRepository.Get(id);
+            var feeDetails = _unitOfWork.FeeDetailsRepository.GetByFilter(x => x.Id == id, IncludeStr: "FeeMaster").FirstOrDefault();
 
             var feePaymentList = _unitOfWork.FeePaymentRepository
-                .GetByFilter(x => x.FeeDetailsId == id)
-                .Select(x => x.StudentID);
+                .GetByFilter(x => x.FeeDetailsId == id).ToList();
 
             var studentList = _unitOfWork.StudentRepository
                 .GetByFilter(x => x.UniversityId == feeDetails.UniversityId && x.DepartmentId == feeDetails.DepartmentId
-                             && x.Year == feeDetails.Year && !feePaymentList.Contains(x.Id), IncludeStr: "Department").ToList();
+                             && x.Year == feeDetails.Year, IncludeStr: "Department").ToList();
 
             List<PendingPaymentViewModel> list = (from a in studentList
+                                                  let feePayment = feePaymentList.Where(x => x.StudentID == a.Id).FirstOrDefault()
                                                   select new PendingPaymentViewModel
                                                   {
+
+
                                                       StudentId = a.Id,
                                                       StudentCode = a.StudentCode,
                                                       StudentName = $"{a.FirstName} {a.LastName}",
                                                       Department = a.Department.DepartmentName,
                                                       Amount = feeDetails.Amount,
                                                       DueDate = feeDetails.DueDate,
+                                                      FeeType = feeDetails.FeeMaster.FeeType,
+                                                      IsPaymentCompleted = feePayment != null ? true : false,
+                                                      PaymentDate = feePayment != null ? feePayment.PaymentDate.ToString("MM/dd/yyyy") : string.Empty,
                                                   }).ToList();
 
             return View(list);
@@ -330,6 +335,28 @@ namespace University.Portal.Web.Controllers
             TempData["JavaScriptFunction"] = $"showToastrMessage('Reminder sent successfully!','');";
 
             return RedirectToAction("TutionFeeDetails");
+        }
+
+        public async Task<IActionResult> PublishHallTicket(int id)
+        {
+            var hallticketMasterId = _unitOfWork.DocumentMasterRepository.GetByFilter(x => x.DocCode == "DOC_001").Select(y => y.Id).FirstOrDefault();
+
+            var studentDocument = new StudentDocument()
+            {
+                StudentId = id,
+                DocumentMasterId = hallticketMasterId,
+                IsActive = true,
+            };
+
+            _unitOfWork.StudentDocumentRepository.Add(studentDocument);
+
+            SendDocumentPublishNotification(studentDocument);
+
+            await _unitOfWork.CompleteAsync();
+
+            TempData["JavaScriptFunction"] = $"showToastrMessage('document added successfully!','');";
+
+            return RedirectToAction("ExamFeeDetails");
         }
 
         public IActionResult ExamSchedule()
@@ -643,7 +670,7 @@ namespace University.Portal.Web.Controllers
 
             return View(model);
         }
-        
+
         public async Task<IActionResult> PublishDocument(int id, int documentId)
         {
 

@@ -570,15 +570,19 @@ namespace University.Portal.Web.Controllers
                                      .GetByFilter(x => x.FeeDetails.UniversityId == GetUniversityId, IncludeStr: "FeeDetails")
                                      select a.StudentID).ToList();
 
+            var examResultList = _unitOfWork.ExamResultRepository.GetAll();
+
             var studentList = (from a in _unitOfWork.StudentRepository
                             .GetByFilter(x => feePaymentDetails.Contains(x.Id), IncludeStr: "Department")
+                               let examResult = examResultList.Where(x=>x.StudentId == a.Id).FirstOrDefault()
                                select new ExamResultGridViewModel()
                                {
                                    Id = a.Id,
                                    StudentCode = a.StudentCode,
                                    StudentName = $"{a.FirstName} {a.LastName}",
                                    Department = a.Department.DepartmentName,
-                                   Class = GetYearDesc(a.Year.Value)
+                                   Class = GetYearDesc(a.Year.Value),
+                                   IsResultPublished = examResult != null ? true : false,
                                }).ToList();
 
 
@@ -590,6 +594,132 @@ namespace University.Portal.Web.Controllers
             var model = GetExamResultViewModel();
             model.Id = id;
             return View(model);
+        }
+
+        public IActionResult AddEditExamResultNew(int id)
+        {
+            var model = GetExamResultNewViewModel(id);            
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEditExamResultNew(ExamResultNewViewModel model)
+        {            
+            var subjectResult = new SubjectResult();
+            if (ModelState.IsValid)
+            {
+                subjectResult = new SubjectResult()
+                {
+                    SubjectMasterId = model.SubjectMasterId1,
+                    StudentId = model.Id,
+                    Mark = model.SubjectValue1,
+                    ExamResult = model.SubjectValue1 <= 4 ? false : true,
+                    IsActive = true,
+                };
+
+                _unitOfWork.SubjectResultRepository.Add(subjectResult);
+
+                subjectResult = new SubjectResult()
+                {
+                    SubjectMasterId = model.SubjectMasterId2,
+                    StudentId = model.Id,
+                    Mark = model.SubjectValue2,
+                    ExamResult = model.SubjectValue2 <= 4 ? false : true,
+                    IsActive = true,
+                };
+
+                _unitOfWork.SubjectResultRepository.Add(subjectResult);
+
+                subjectResult = new SubjectResult()
+                {
+                    SubjectMasterId = model.SubjectMasterId3,
+                    StudentId = model.Id,
+                    Mark = model.SubjectValue3,
+                    ExamResult = model.SubjectValue3 <= 4 ? false : true,
+                    IsActive = true,
+                };
+
+                _unitOfWork.SubjectResultRepository.Add(subjectResult);
+
+                subjectResult = new SubjectResult()
+                {
+                    SubjectMasterId = model.SubjectMasterId4,
+                    StudentId = model.Id,
+                    Mark = model.SubjectValue4,
+                    ExamResult = model.SubjectValue4 <= 4 ? false : true,
+                    IsActive = true,
+                };
+
+                _unitOfWork.SubjectResultRepository.Add(subjectResult);
+
+                subjectResult = new SubjectResult()
+                {
+                    SubjectMasterId = model.SubjectMasterId5,
+                    StudentId = model.Id,
+                    Mark = model.SubjectValue5,
+                    ExamResult = model.SubjectValue5 <= 4 ? false : true,
+                    IsActive = true,
+                };
+
+                _unitOfWork.SubjectResultRepository.Add(subjectResult);
+
+                subjectResult = new SubjectResult()
+                {
+                    SubjectMasterId = model.SubjectMasterId6,
+                    StudentId = model.Id,
+                    Mark = model.SubjectValue6,
+                    ExamResult = model.SubjectValue6 <= 4 ? false : true,
+                    IsActive = true,
+                };
+
+                _unitOfWork.SubjectResultRepository.Add(subjectResult);
+
+                subjectResult = new SubjectResult()
+                {
+                    SubjectMasterId = model.SubjectMasterId7,
+                    StudentId = model.Id,
+                    Mark = model.SubjectValue7,
+                    ExamResult = model.SubjectValue7 <= 4 ? false : true,
+                    IsActive = true,
+                };
+
+                _unitOfWork.SubjectResultRepository.Add(subjectResult);
+
+                subjectResult = new SubjectResult()
+                {
+                    SubjectMasterId = model.SubjectMasterId8,
+                    StudentId = model.Id,
+                    Mark = model.SubjectValue8,
+                    ExamResult = model.SubjectValue8 <= 4 ? false : true,
+                    IsActive = true,
+                };
+
+                _unitOfWork.SubjectResultRepository.Add(subjectResult);
+
+                var examResult = new ExamResult()
+                {
+                    StudentId = model.Id,
+                    Result = (model.SubjectValue1 <= 4 || model.SubjectValue2 <= 4 || model.SubjectValue3 <= 4 || model.SubjectValue4 <= 4 || model.SubjectValue5 <= 4 || model.SubjectValue6 <= 4 || model.SubjectValue7 <= 4 || model.SubjectValue8 <= 4) ? false : true,
+                    CGPA = (model.SubjectValue1 + model.SubjectValue2 + model.SubjectValue3 + model.SubjectValue4 + model.SubjectValue5 + model.SubjectValue6 + model.SubjectValue7 + model.SubjectValue8) / 8,
+                    IsActive = true
+                };
+
+                TempData["JavaScriptFunction"] = $"showToastrMessage('Exam result published successfully!','');";
+
+                SendExamResultAnnouncement(examResult);
+
+                _unitOfWork.ExamResultRepository.Add(examResult);
+
+                if (await _unitOfWork.CompleteAsync()) return RedirectToAction("PublishExamResult");
+                else
+                {
+                    return View(GetExamResultNewViewModel(model.Id));
+                }
+            }
+            else
+            {
+                return View(GetExamResultNewViewModel(model.Id));
+            }
         }
 
         [HttpPost]
@@ -725,6 +855,66 @@ namespace University.Portal.Web.Controllers
         {
             var model = new ExamResultViewModel();
             model.Result = GetResultDropDownItems();
+            return model;
+        }
+
+        private ExamResultNewViewModel GetExamResultNewViewModel(int id)
+        {
+            var model = new ExamResultNewViewModel();
+            model.Id = id;
+
+            var student = _unitOfWork.StudentRepository.Get(id);
+
+            var subjectMasterList = _unitOfWork.SubjectMasterRepository
+                .GetByFilter(x => x.UniversityId == GetUniversityId && x.DepartmentId == student.DepartmentId && x.Year == student.Year).ToList();
+
+            int i = 0;
+
+            foreach (var subjectMaster in subjectMasterList)
+            {
+                if (i == 0)
+                {
+                    model.SubjectMasterId1 = subjectMaster.Id;
+                    model.SubjectName1 = subjectMaster.SubjectName;
+                }
+                if (i == 1)
+                {
+                    model.SubjectMasterId2 = subjectMaster.Id;
+                    model.SubjectName2 = subjectMaster.SubjectName;
+                }
+                if (i == 2)
+                {
+                    model.SubjectMasterId3 = subjectMaster.Id;
+                    model.SubjectName3 = subjectMaster.SubjectName;
+                }
+                if (i == 3)
+                {
+                    model.SubjectMasterId4 = subjectMaster.Id;
+                    model.SubjectName4 = subjectMaster.SubjectName;
+                }
+                if (i == 4)
+                {
+                    model.SubjectMasterId5 = subjectMaster.Id;
+                    model.SubjectName5 = subjectMaster.SubjectName;
+                }
+                if (i == 5)
+                {
+                    model.SubjectMasterId6 = subjectMaster.Id;
+                    model.SubjectName6 = subjectMaster.SubjectName;
+                }
+                if (i == 6)
+                {
+                    model.SubjectMasterId7 = subjectMaster.Id;
+                    model.SubjectName7 = subjectMaster.SubjectName;
+                }
+                if (i == 7)
+                {
+                    model.SubjectMasterId8 = subjectMaster.Id;
+                    model.SubjectName8 = subjectMaster.SubjectName;
+                }
+                i++;
+            }
+
             return model;
         }
 

@@ -13,5 +13,6 @@ namespace University.Portal.Data.Data.ViewModels
         public string StudentName { get; set; }
         public string Department { get; set; }
         public string Class { get; set; }
+        public bool IsResultPublished { get; set; }
     }
 }

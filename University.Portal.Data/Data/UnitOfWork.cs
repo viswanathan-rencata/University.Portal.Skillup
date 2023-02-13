@@ -31,6 +31,8 @@ namespace University.Portal.Data.Data
         public IRepository<ExamResult> ExamResultRepository => new Repository<ExamResult>(_context);
         public IRepository<DocumentMaster> DocumentMasterRepository => new Repository<DocumentMaster>(_context);
         public IRepository<StudentDocument> StudentDocumentRepository => new Repository<StudentDocument>(_context);
+		public IRepository<SubjectMaster> SubjectMasterRepository => new Repository<SubjectMaster>(_context);
+        public IRepository<SubjectResult> SubjectResultRepository => new Repository<SubjectResult>(_context);
 
         public bool Complete()
 		{

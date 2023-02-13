@@ -23,6 +23,9 @@ namespace University.Portal.Data.Data.Models
 
         [Column("StudentID")]
         public int StudentID { get; set; }
+        
+        [Column("PaymentDate")]
+        public DateTime PaymentDate { get; set; }
         public FeeDetails FeeDetails { get; set; }
         public Student Student { get; set; }
     }

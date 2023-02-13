@@ -90,6 +90,8 @@ namespace University.Portal.Web.Controllers
                 };
 
                 _unitOfWork.UserRepository.Add(user);
+                
+                TempData["JavaScriptFunction"] = $"showToastrMessage('Registration completed successfully!','');";
 
                 if (await _unitOfWork.CompleteAsync()) return RedirectToAction("Index");
                 else

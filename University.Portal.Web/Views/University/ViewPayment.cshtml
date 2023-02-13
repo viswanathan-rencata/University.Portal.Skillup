@@ -16,6 +16,7 @@
                     <th data-field="Department" data-filter-control="input">Department</th>
                     <th data-field="Due Date" data-filter-control="input">Due Date</th>
                     <th data-field="Amount" data-filter-control="input">Amount</th>
+                    <th data-field="Payment Date" data-filter-control="input">Payment Date</th>
                     <th colspan="1" data-field="Action">Action</th>
                 </tr>
             </thead>
@@ -28,9 +29,22 @@
                         <td>@item.Department</td>
                         <td>@item.DueDate.ToString("MM/dd/yyyy")</td>
                         <td>₹@item.Amount.ToString("0.00")</td>
+                        <td>@item.PaymentDate</td>
                         <td>
                             <div class="d-flex align-items-center justify-content-evenly">
-                                <a asp-action="SendReminder" asp-route-id=@item.StudentId class="btn btn-primary gridbtn">Send Reminder</a>                                
+                            @{
+                                if(item.IsPaymentCompleted)
+                                {
+                                    if(item.FeeType == "ExamFee")
+                                    {
+                                        <a asp-action="PublishHallTicket" asp-route-id=@item.StudentId class="btn btn-primary gridbtn">Publish Hall Ticket</a>                                
+                                    }                                    
+                                }
+                                else
+                                {
+                                    <a asp-action="SendReminder" asp-route-id=@item.StudentId class="btn btn-primary gridbtn">Send Reminder</a>                                
+                                }
+                            }                                
                             </div>
 
                         </td>
@@ -49,6 +63,7 @@
                     <th>Department</th>
                     <th>Due Date</th>
                     <th>Amount</th>                    
+                    <th>Payment Date</th>
                 </tr>
             </thead>
             <tbody>

@@ -33,6 +33,7 @@ namespace University.Portal.Data.Data
         public IRepository<StudentDocument> StudentDocumentRepository => new Repository<StudentDocument>(_context);
 		public IRepository<SubjectMaster> SubjectMasterRepository => new Repository<SubjectMaster>(_context);
         public IRepository<SubjectResult> SubjectResultRepository => new Repository<SubjectResult>(_context);
+		public IRepository<UploadDocument> UploadDocumentRepository => new Repository<UploadDocument>(_context);
 
         public bool Complete()
 		{

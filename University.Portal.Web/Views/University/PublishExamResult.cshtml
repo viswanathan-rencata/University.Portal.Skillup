@@ -33,7 +33,7 @@
                             <div class="d-flex align-items-center justify-content-evenly">
                                 @if (item.IsResultPublished)
                                 {
-                                    <a asp-action="AddEditExamResultNew" asp-route-id=@item.Id class="btn btn-primary gridbtn">Publish Result</a>
+                                    <a asp-action="ViewResult" asp-route-id=@item.Id class="btn btn-primary gridbtn">View Result</a>
                                 }
                                 else
                                 {
@@ -51,20 +51,16 @@
         <table class="table table-bordered" style="margin-top:50px">
             <thead>
                 <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Date of Birth</th>
-                    <th>Date of Joining</th>
+                    <th>Student Code</th>
+                    <th>Student Name</th>
                     <th>Department</th>
                     <th>Class</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="9" class="text-center">No Records Found!</td>
+                    <td colspan="5" class="text-center">No Records Found!</td>
                 </tr>
             </tbody>
         </table>

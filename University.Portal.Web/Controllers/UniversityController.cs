@@ -44,6 +44,7 @@ namespace University.Portal.Web.Controllers
                                Year = a.Year != null ? GetYearDesc(a.Year.Value) : string.Empty
                            }).ToList();
 
+            TempData["JavaScriptFunction"] = $"setActiveTabClass('studentDetails');";
 
             return View(studentList);
         }
@@ -192,6 +193,8 @@ namespace University.Portal.Web.Controllers
                             Amount = a.Amount,
                             DueDate = a.DueDate
                         }).ToList();
+
+            TempData["JavaScriptFunction"] = $"setActiveTabClass('tutionFeeDetails');";
 
             return View(list);
         }
@@ -372,6 +375,7 @@ namespace University.Portal.Web.Controllers
                                            EndDate = a.EndDate,
                                        }).ToList();
 
+            TempData["JavaScriptFunction"] = $"setActiveTabClass('examSchedule');";
 
             return View(examScheduleDetails);
         }
@@ -470,6 +474,8 @@ namespace University.Portal.Web.Controllers
                             Amount = a.Amount,
                             DueDate = a.DueDate
                         }).ToList();
+
+            TempData["JavaScriptFunction"] = $"setActiveTabClass('feeDetails');";
 
             return View(list);
         }
@@ -585,8 +591,29 @@ namespace University.Portal.Web.Controllers
                                    IsResultPublished = examResult != null ? true : false,
                                }).ToList();
 
+            TempData["JavaScriptFunction"] = $"setActiveTabClass('publishExamResult');";
 
             return View(studentList);
+        }
+
+        public IActionResult ViewResult(int id)
+        {
+            var departmentList = _unitOfWork.DepartmentRepository.GetAll();
+
+            var examResultViewModel = (from a in _unitOfWork.SubjectResultRepository.GetByFilter(x => x.StudentId == id, IncludeStr: "Student,SubjectMaster")
+                                       let department = departmentList.Where(x=>x.Id == a.Student.DepartmentId).FirstOrDefault()
+                                       select new ViewExamResultModel() 
+                                       {
+                                           StudentName = $"{a.Student.FirstName} {a.Student.MiddleName} {a.Student.LastName}",
+                                           Class = GetYearDesc(a.Student.Year.Value),
+                                           Department = department != null ? department.DepartmentName : string.Empty,
+                                           SubjectCode = a.SubjectMaster.SubjectCode,
+                                           SubjectName= a.SubjectMaster.SubjectName,
+                                           Mark = a.Mark.ToString("0.00"),
+                                           Result = a.ExamResult ? "Pass" : "Fail"
+                                       }).ToList();
+
+            return View(examResultViewModel);
         }
 
         public IActionResult AddEditExamResult(int id)
@@ -787,7 +814,7 @@ namespace University.Portal.Web.Controllers
                 {
                     var item = new PublishDocumentViewModel()
                     {
-                        Id = student.Id,
+                        Id = student.StudentId,
                         DocumentId = document.Id,
                         StudentName = $"{student.Student.FirstName} {student.Student.LastName}",
                         Department = departmentMaster.Where(x => x.Id == student.Student.DepartmentId).Select(y => y.DepartmentName).FirstOrDefault(),
@@ -797,6 +824,8 @@ namespace University.Portal.Web.Controllers
                     model.Add(item);
                 }
             }
+
+            TempData["JavaScriptFunction"] = $"setActiveTabClass('publishDocuments');";
 
             return View(model);
         }

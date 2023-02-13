@@ -31,7 +31,14 @@
                         <td>@item.Class</td>
                         <td>
                             <div class="d-flex align-items-center justify-content-evenly">
-                                <a asp-action="AddEditExamResult" asp-route-id=@item.Id class="btn btn-primary gridbtn">Publish Result</a>
+                                @if (item.IsResultPublished)
+                                {
+                                    <a asp-action="AddEditExamResultNew" asp-route-id=@item.Id class="btn btn-primary gridbtn">Publish Result</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="AddEditExamResultNew" asp-route-id=@item.Id class="btn btn-primary gridbtn">Publish Result</a>
+                                }
                             </div>
                         </td>
                     </tr>

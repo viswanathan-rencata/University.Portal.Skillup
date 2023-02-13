@@ -25,6 +25,8 @@ namespace University.Portal.Data.Interface
         IRepository<ExamResult> ExamResultRepository { get; }
         IRepository<DocumentMaster> DocumentMasterRepository { get; }
         IRepository<StudentDocument> StudentDocumentRepository { get; }
+        IRepository<SubjectMaster> SubjectMasterRepository { get; }
+        IRepository<SubjectResult> SubjectResultRepository { get; }
         Task<bool> CompleteAsync();
 		bool Complete();
 		bool HasChanges();

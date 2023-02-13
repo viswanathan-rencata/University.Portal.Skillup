@@ -1,0 +1,88 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model University.Portal.Data.Data.ViewModels.ExamResultNewViewModel;
+
+<form method="post">
+    <div class="container-fluid ps-md-0">
+        <div class="row g-0">
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-8 mx-auto">
+                                <input type="hidden" class="form-control" asp-for="Id" />
+                                <input type="hidden" class="form-control" asp-for="SubjectMasterId1" />
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" asp-for="SubjectValue1" placeholder="" />
+                                    <label asp-for="SubjectName1">@Model.SubjectName1</label>
+                                    <span asp-validation-for="SubjectName1" class="text-danger"></span>
+                                </div>
+                                <input type="hidden" class="form-control" asp-for="SubjectMasterId2" />
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" asp-for="SubjectValue2" placeholder="" />
+                                    <label asp-for="SubjectName2">@Model.SubjectName2</label>
+                                    <span asp-validation-for="SubjectName2" class="text-danger"></span>
+                                </div>
+                                <input type="hidden" class="form-control" asp-for="SubjectMasterId3" />
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" asp-for="SubjectValue3" placeholder="" />
+                                    <label asp-for="SubjectName3">@Model.SubjectName3</label>
+                                    <span asp-validation-for="SubjectName3" class="text-danger"></span>
+                                </div>
+                                <input type="hidden" class="form-control" asp-for="SubjectMasterId4" />
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" asp-for="SubjectValue4" placeholder="" />
+                                    <label asp-for="SubjectName4">@Model.SubjectName4</label>
+                                    <span asp-validation-for="SubjectName4" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-8 mx-auto">
+                                <input type="hidden" class="form-control" asp-for="SubjectMasterId5" />
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" asp-for="SubjectValue5" placeholder="" />
+                                    <label asp-for="SubjectName5">@Model.SubjectName5</label>
+                                    <span asp-validation-for="SubjectName5" class="text-danger"></span>
+                                </div>
+                                <input type="hidden" class="form-control" asp-for="SubjectMasterId6" />
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" asp-for="SubjectValue6" placeholder="" />
+                                    <label asp-for="SubjectName6">@Model.SubjectName6</label>
+                                    <span asp-validation-for="SubjectName6" class="text-danger"></span>
+                                </div>
+                                <input type="hidden" class="form-control" asp-for="SubjectMasterId7" />
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" asp-for="SubjectValue7" placeholder="" />
+                                    <label asp-for="SubjectName7">@Model.SubjectName7</label>
+                                    <span asp-validation-for="SubjectName7" class="text-danger"></span>
+                                </div>
+                                <input type="hidden" class="form-control" asp-for="SubjectMasterId8" />
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" asp-for="SubjectValue8" placeholder="" />
+                                    <label asp-for="SubjectName8">@Model.SubjectName8</label>
+                                    <span asp-validation-for="SubjectName8" class="text-danger"></span>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Publish Result</button>
+                                    <button class="btn btn-lg btn-info btn-login text-uppercase fw-bold mb-2" type="button" onclick="@("window.location.href='" + @Url.Action("Index", "University") + "'");">Go Back</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

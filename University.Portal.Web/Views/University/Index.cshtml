@@ -11,11 +11,13 @@
 @model IEnumerable<StudentGridModel>;
 
 @{
+    <label style="margin-top:50px;font-size:x-large">Student Details</label>
     if (Model != null && Model.Count() > 0)
     {
         <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
             <thead>
                 <tr>
+                    <th data-filter-control="input">S.No</th>
                     <th data-field="Code" data-filter-control="input">Code</th>
                     <th data-field="Name" data-filter-control="input">Name</th>
                     <th data-field="Gender" data-filter-control="select">Gender</th>
@@ -26,7 +28,7 @@
                     <th data-field="Department" data-filter-control="select">Department</th>
                     <th data-field="Class" data-filter-control="input">Class</th>
                     @{
-                        if (User.FindFirst("Role").Value == "OfficeAdmin")
+                        if (User.FindFirst("Role").Value == "Office Admin")
                         {
                             <th colspan="1" data-field="Action">Action</th>
                         }
@@ -35,9 +37,13 @@
                 </tr>
             </thead>
             <tbody>
+                @{
+                    var i = 1;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <th>@(i)</th>
                         <th scope="row">@item.StudentCode</th>
                         <td>@item.FullName</td>
                         <td>@item.Gender</td>
@@ -48,7 +54,7 @@
                         <td>@item.DepartmentName</td>
                         <td>@item.Year</td>
                         @{
-                            if (User.FindFirst("Role").Value == "OfficeAdmin")
+                            if (User.FindFirst("Role").Value == "Office Admin")
                             {
                                 <td>
                                     <div class="d-flex align-items-center justify-content-evenly">
@@ -60,6 +66,7 @@
                             }
                         }
                     </tr>
+                    i++;
                 }
             </tbody>
         </table>
@@ -90,9 +97,9 @@
 }
 
 <div style="float:right">
-    <h3>Total Records (@Model.Count())</h3>
+    <h5>Total Records (@Model.Count())</h5>
     @{
-        if (User.FindFirst("Role").Value == "OfficeAdmin")
+        if (User.FindFirst("Role").Value == "Office Admin")
         {
             <input type="button" value="Add Student" class="btn btn-primary mt-5" style="float:right" onclick="@("window.location.href='" + @Url.Action("Create", "University") + "'");" />
         }

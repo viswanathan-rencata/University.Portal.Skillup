@@ -25,7 +25,7 @@ namespace University.Portal.Web.Controllers
                                         Id = a.Id,
                                         Message = a.Message,
                                         CreatedOn = a.CreatedOn
-                                    }).ToList();
+                                    }).OrderByDescending(x => x.CreatedOn).ToList();
             }
             else
             {
@@ -36,7 +36,7 @@ namespace University.Portal.Web.Controllers
                                         Id = a.Id,
                                         Message = a.Message,
                                         CreatedOn = a.CreatedOn
-                                    }).ToList();
+                                    }).OrderByDescending(x => x.CreatedOn).ToList();
             }
             
             return View(notificationList);

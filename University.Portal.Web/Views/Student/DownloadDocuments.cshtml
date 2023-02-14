@@ -9,28 +9,37 @@
 @model IEnumerable<DownloadGridDocument>;
 
 @{
+    <label style="margin-top:50px;font-size:x-large">Download Documents</label>
     if (Model != null && Model.Count() > 0)
     {
-        <table id="table1" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
+        <table id="table1" class="table table-bordered" style="margin-top:50px;width:100%" data-filter-control="true">
             <thead>
                 <tr>
-                    <th data-field="Document" data-filter-control="input">Document</th>
-                    <th colspan="1" data-field="Action">Action</th>
+                    <th data-filter-control="input">S.No</th>
+                    <th data-field="Document" data-filter-control="input" data- style="width:20%">Document</th>
+                    <th data-field="CreatedOn" data-filter-control="input">Generated On</th>
+                    <th style="width:80%;" data-field="Action">Action</th>
 
                 </tr>
             </thead>
             <tbody>
+                 @{
+                    var i = 1;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <th scope="row">@item.DocumentName</th>
-                        <td>
+                        <th>@(i)</th>
+                        <th scope="row" style="width:80%;">@item.DocumentName</th>
+                        <td>@item.CreatedOn.ToString("MM/dd/yyyy")</td>
+                        <td style="width:20%">
                             <div class="d-flex align-items-center justify-content-evenly">
                                 <a onclick="downloadDocument(@item.Id)" class="btn btn-primary gridbtn" id="downloadButton_@item.Id">Download Document                                    
                                 </a>
                             </div>
                         </td>
                     </tr>
+                    i++;
                 }
             </tbody>
         </table>
@@ -56,7 +65,7 @@
 }
 
 <div style="float:right">
-    <h3>Total Records (@Model.Count())</h3>
+    <h6>Total Records (@Model.Count())</h6>
 </div>
 
 <script>

@@ -30,7 +30,8 @@ namespace University.Portal.Web.Controllers
                                    {
                                        Id = a.Id,
                                        DocumentId = a.DocumentMasterId,
-                                       DocumentName  =a.DocumentMaster.DocName
+                                       DocumentName  =a.DocumentMaster.DocName,
+                                       CreatedOn = DateTime.Now
                                    }).ToList();
 
             return View(studentDocument);

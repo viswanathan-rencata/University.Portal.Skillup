@@ -31,7 +31,7 @@
             dataType: "html",
             success: function (response) {
                 if (response == '"Success"') {
-                    window.location.href = '/University/Index';
+                    window.location.href = '/University';
                 } else {
                     $('#loginValidation').show();
                     $('#loginFailed').text(response);
@@ -64,7 +64,8 @@
             dataType: "html",
             success: function (response) {
                 if (response == '"Success"') {
-                    window.location.href = '/Student/FeePayment';
+                    //window.location.href = '/Student/FeePayment';
+                    window.location.href = '/Notification/Notification';                    
                 } else {
                     $('#loginValidation1').show();
                     $('#loginFailed1').text(response);

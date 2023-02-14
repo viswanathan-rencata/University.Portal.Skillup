@@ -11,5 +11,6 @@ namespace University.Portal.Data.Data.ViewModels
         public int Id { get; set; }
         public int DocumentId { get; set; }
         public string DocumentName { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

@@ -11,7 +11,7 @@
         <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
             <thead>
                 <tr>
-                    <th data-field="Student Code" data-filter-control="input">Student Code</th>
+                    <th data-field="Student Code" data-filter-control="input">Code</th>
                     <th data-field="Student Name" data-filter-control="input">Student Name</th>
                     <th data-field="Department" data-filter-control="input">Department</th>
                     <th data-field="Due Date" data-filter-control="input">Due Date</th>
@@ -29,7 +29,12 @@
                         <td>@item.Department</td>
                         <td>@item.DueDate.ToString("MM/dd/yyyy")</td>
                         <td>₹@item.Amount.ToString("0.00")</td>
-                        <td>@item.PaymentDate</td>
+                        <td>@item.PaymentDate
+                            @if(item.IsPaymentCompleted)
+                            {
+                                <br><label style="color:green"><b>Paid</b></label>
+                            }
+                        </td>
                         <td>
                             <div class="d-flex align-items-center justify-content-evenly">
                             @{
@@ -58,7 +63,7 @@
         <table class="table table-bordered" style="margin-top:50px">
             <thead>
                 <tr>
-                    <th>Student Code</th>
+                    <th>Code</th>
                     <th>Student Name</th>
                     <th>Department</th>
                     <th>Due Date</th>
@@ -76,7 +81,7 @@
 }
 
 <div style="float:right">
-    <h3>Total Records (@Model.Count())</h3>    
+    <h5>Total Records (@Model.Count())</h5>    
 </div>
 
 <script>

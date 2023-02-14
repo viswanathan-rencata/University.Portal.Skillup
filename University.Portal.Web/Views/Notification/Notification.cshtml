@@ -8,22 +8,27 @@
 @model IEnumerable<University.Portal.Data.Data.ViewModels.NotificationGridViewModel>;
 
 @{
+    <label style="margin-top:50px;font-size:x-large">Notifications</label>
     if (Model != null && Model.Count() > 0)
     {
-        <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
+        <table id="table" class="table table-bordered" style="margin-top:50px;" data-filter-control="true">
             <thead>
-                <tr>                    
-                    <th data-field="Message" data-filter-control="input">Message</th>
-                    <th data-field="Created On" data-filter-control="input">Created On</th>
+                <tr>
+                    <th data-filter-control="input">S.No</th>
+                    <th data-field="Message" data-filter-control="input" data-template="" >Message</th>
+                    <th data-field="Created On" data-filter-control="input">Received On</th>
                 </tr>
             </thead>
             <tbody>
+                @{var i = 1;}
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <th>@(i)</th>
                         <th scope="row"> @(new HtmlString(item.Message.ToString()))</th>
                         <td> @item.CreatedOn.ToString("MM/dd/yyyy")</td>
                     </tr>
+                    i++;
                 }
             </tbody>
         </table>
@@ -34,7 +39,7 @@
             <thead>
                 <tr>                    
                     <th>Message</th>
-                    <th>Created On</th>
+                    <th>Received On</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,7 +52,7 @@
 }
 
 <div style="float:right">
-    <h3>Total Records (@Model.Count())</h3>
+    <h5>Total Records (@Model.Count())</h5>
 </div>
 
 <script>

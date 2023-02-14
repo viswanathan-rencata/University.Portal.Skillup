@@ -8,21 +8,28 @@
 @model IEnumerable<FeePaymentViewModel>;
 
 @{
+    <label style="margin-top:50px;font-size:x-large" >Fee Payment</label>
     if (Model != null && Model.Count() > 0)
     {
+
         <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
             <thead>
                 <tr>
-                    <th data-field="FeeType" data-filter-control="input">FeeType</th>
+                    <th data-filter-control="input">S.No</th>
+                    <th data-field="FeeType" data-filter-control="input">Fee Type</th>
                     <th data-field="Amount" data-filter-control="input">Amount</th>
                     <th data-field="Due Date" data-filter-control="input">Due Date</th>
                     <th colspan="1" data-field="Action">Action</th>
                 </tr>
             </thead>
             <tbody>
+                @{
+                    var i = 1;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <th>@(i)</th>
                         <th scope="row">@item.FeeType</th>
                         <td>@item.Amount.ToString("0.00")</td>
                         <td>@item.DueDate.ToString("MM/dd/yyyy")</td>
@@ -32,16 +39,18 @@
                             </div>
                         </td>
                     </tr>
+                    i++;
                 }
             </tbody>
         </table>
     }
     else
     {
+        
         <table class="table table-bordered" style="margin-top:50px">
             <thead>
                 <tr>
-                    <th>FeeType</th>
+                    <th>Fee Type</th>
                     <th>Amount</th>
                     <th>Due Date</th>                   
                 </tr>
@@ -56,7 +65,7 @@
 }
 
 <div style="float:right">
-    <h3>Total Records (@Model.Count())</h3>
+    <h5>Total Records (@Model.Count())</h5>
 </div>
 
 <script>

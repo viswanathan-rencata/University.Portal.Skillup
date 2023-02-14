@@ -141,8 +141,9 @@
                 if (User.FindFirst("Role").Value == "Student")
                 {
                     <li>
-                        <a href="/Notification/Notification" class="nav-link text-white">
+                        <a href="/Notification/Notification" class="nav-link text-white" id="notifications">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            <i class="fa fa-bell" aria-hidden="true"></i>
                             Notifications
                         </a>
                     </li>
@@ -152,8 +153,9 @@
                 if (User.FindFirst("Role").Value == "Student")
                 {
                     <li>
-                        <a href="/Student/FeePayment" class="nav-link text-white">
+                        <a href="/Student/FeePayment" class="nav-link text-white" id="feePayment">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
                             Fee Payment
                         </a>
                     </li>
@@ -163,8 +165,9 @@
                 if (User.FindFirst("Role").Value == "Student")
                 {
                     <li>
-                        <a href="/Student/DownloadDocuments" class="nav-link text-white">
+                        <a href="/Student/ViewResult" class="nav-link text-white" id="viewResults">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            <i class="fa fa-eye" aria-hidden="true"></i>
                             View Results
                         </a>
                     </li>
@@ -176,13 +179,26 @@
                     <li>
                         <a href="/Student/UploadDocument" class="nav-link text-white" id="uploadDocument">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            <i class="fa fa-upload" aria-hidden="true"></i>
+                            Upload Documents
+                        </a>
+                    </li>
+                }
+            }
+            @{
+                if (User.FindFirst("Role").Value == "Student")
+                {
+                    <li>
+                        <a href="/Student/DownloadDocuments" class="nav-link text-white" id="downloadDocuments">
+                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            <i class="fa fa-download" aria-hidden="true"></i>
                             Download Documents
                         </a>
                     </li>
                 }
-            }            
+            }
             @{
-                if (User.FindFirst("Role").Value == "Office Admin" || User.FindFirst("Role").Value == "Exam Coordinator")
+                if (User.FindFirst("Role").Value == "OfficeAdmin" || User.FindFirst("Role").Value == "ExaminationCoordinator")
                 {
                     <li>
                         <a href="/Notification/Notification" class="nav-link text-white" id="notifications">
@@ -193,6 +209,7 @@
                     </li>
                 }
             }
+            
             
 
         </ul>

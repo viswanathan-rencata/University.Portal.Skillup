@@ -90,9 +90,6 @@ namespace University.Portal.Data.Data
                 .HasOne(p => p.DocumentMaster);
 
             modelBuilder.Entity<SubjectMaster>()
-               .HasOne(p => p.University);
-
-            modelBuilder.Entity<SubjectMaster>()
                .HasOne(p => p.Department);
 
             modelBuilder.Entity<SubjectResult>()

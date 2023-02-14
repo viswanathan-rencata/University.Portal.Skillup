@@ -5,45 +5,17 @@
 @{
 }
 
-@model UploadDocumentViewModel
-
-<form method="post" enctype="multipart/form-data">
-    <div class="container-fluid ps-md-0">
-        <div class="row g-0">
-            <div class="col-md-8 col-lg-6">
-                <div class="login d-flex align-items-center py-5">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-9 col-lg-8 mx-auto">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" asp-for="DocumentType" placeholder="Document Type" />
-                                    <label asp-for="DocumentType">Document Type</label>
-                                    <span asp-validation-for="DocumentType" class="text-danger"></span>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input class="form-control" type="file" id="formFile" asp-for="DocumentData">
-                                    <label asp-for="DocumentData" class="form-label">Document</label>
-                                    <span asp-validation-for="DocumentData" class="text-danger"></span>
-                                </div>
-                                <div class="d-grid">
-                                    <button class="btn btn-lg btn-primary text-uppercase fw-bold mb-2" type="submit">Upload</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
+@model IEnumerable<DocumentVerificationGrid>
 
 @{
-    if (Model != null && Model.UploadDocumentGrid.Count() > 0)
+    if (Model != null && Model.Count() > 0)
     {
         <table id="table1" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
             <thead>
                 <tr>
+                    <th data-field="Student Name" data-filter-control="input">Student Name</th>
+                    <th data-field="Department" data-filter-control="input">Department</th>
+                    <th data-field="Class" data-filter-control="input">Class</th>
                     <th data-field="Document Type" data-filter-control="input">Document Type</th>
                     <th data-field="Document Name" data-filter-control="input">Document Name</th>
                     <th data-field="Uploaded On" data-filter-control="input">Uploaded On</th>
@@ -52,24 +24,30 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.UploadDocumentGrid)
+                @foreach (var item in Model)
                 {
                     <tr>
-                        <th scope="row">@item.DocumentType</th>
+                        <th scope="row">@item.StudentName</th>
+                        <td>@item.Department</td>
+                        <td>@item.Class</td>
+                        <td>@item.DocumentType</td>
                         <td>@item.DocumentName</td>
                         <td>@item.UploadedOn</td>
                         <td>@item.Status</td>
                         <td>
                             <div class="d-flex align-items-center justify-content-evenly">
+                                <a asp-action="ViewUploadedDocument" asp-route-id="Id" class="btn btn-primary gridbtn">View</a>
                                 @{
                                     if (item.Status == "Accepted" || item.Status == "Rejected")
-                                    {
+                                    {                                        
                                     }
                                     else
                                     {
-                                        <a asp-action="DeleteUploadedDocument" asp-route-id="Id" class="btn btn-primary gridbtn">Delete</a>
+                                        <a asp-action="AcceptUploadedDocument" asp-route-id="@item.Id" class="btn btn-success gridbtn">Accept</a>
+                                        <a asp-action="RejectUploadedDocument" asp-route-id="@item.Id" class="btn btn-danger gridbtn">Reject</a>
                                     }
                                 }
+                                
                             </div>
                         </td>
                     </tr>
@@ -82,6 +60,9 @@
         <table class="table table-bordered" style="margin-top:50px">
             <thead>
                 <tr>
+                    <th>Student Name</th>
+                    <th>Department</th>
+                    <th>Class</th>
                     <th>Document Type</th>
                     <th>Document Name</th>
                     <th>Uploaded On</th>
@@ -90,7 +71,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="4" class="text-center">No Records Found!</td>
+                    <td colspan="7" class="text-center">No Records Found!</td>
                 </tr>
             </tbody>
         </table>
@@ -98,7 +79,7 @@
 }
 
 <div style="float:right">
-    <h3>Total Records (@Model.UploadDocumentGrid.Count())</h3>
+    <h3>Total Records (@Model.Count())</h3>
 </div>
 
 <script>

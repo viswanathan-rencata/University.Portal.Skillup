@@ -44,7 +44,7 @@ namespace University.Portal.Web.Controllers
                                Year = a.Year != null ? GetYearDesc(a.Year.Value) : string.Empty
                            }).ToList();
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('studentDetails');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('studentDetails');";
 
             return View(studentList);
         }
@@ -194,7 +194,7 @@ namespace University.Portal.Web.Controllers
                             DueDate = a.DueDate
                         }).ToList();
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('tutionFeeDetails');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('tutionFeeDetails');";
 
             return View(list);
         }
@@ -212,6 +212,9 @@ namespace University.Portal.Web.Controllers
                 model.DueDate = tuttionFee.DueDate;
                 model.DepartmentId = Convert.ToString(tuttionFee.DepartmentId);
             }
+            
+            TempData["SetActiveTab"] = $"setActiveTabClass('tutionFeeDetails');";
+            
             return View(model);
         }
 
@@ -319,6 +322,8 @@ namespace University.Portal.Web.Controllers
                                                       PaymentDate = feePayment != null ? feePayment.PaymentDate.ToString("MM/dd/yyyy") : string.Empty,
                                                   }).ToList();
 
+            TempData["SetActiveTab"] = $"setActiveTabClass('feeDetails');";
+
             return View(list);
         }
 
@@ -375,7 +380,7 @@ namespace University.Portal.Web.Controllers
                                            EndDate = a.EndDate,
                                        }).ToList();
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('examSchedule');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('examSchedule');";
 
             return View(examScheduleDetails);
         }
@@ -475,7 +480,7 @@ namespace University.Portal.Web.Controllers
                             DueDate = a.DueDate
                         }).ToList();
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('feeDetails');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('feeDetails');";
 
             return View(list);
         }
@@ -493,6 +498,9 @@ namespace University.Portal.Web.Controllers
                 model.DueDate = tuttionFee.DueDate;
                 model.DepartmentId = Convert.ToString(tuttionFee.DepartmentId);
             }
+
+            TempData["SetActiveTab"] = $"setActiveTabClass('feeDetails');";
+
             return View(model);
         }
 
@@ -573,7 +581,7 @@ namespace University.Portal.Web.Controllers
         public IActionResult PublishExamResult()
         {
             var feePaymentDetails = (from a in _unitOfWork.FeePaymentRepository
-                                     .GetByFilter(x => x.FeeDetails.UniversityId == GetUniversityId, IncludeStr: "FeeDetails")
+                                     .GetByFilter(x => x.FeeDetails.UniversityId == GetUniversityId && x.FeeDetails.FeeMasterId == 2, IncludeStr: "FeeDetails")
                                      select a.StudentID).ToList();
 
             var examResultList = _unitOfWork.ExamResultRepository.GetAll();
@@ -591,7 +599,7 @@ namespace University.Portal.Web.Controllers
                                    IsResultPublished = examResult != null ? true : false,
                                }).ToList();
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('publishExamResult');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('publishExamResult');";
 
             return View(studentList);
         }
@@ -825,7 +833,7 @@ namespace University.Portal.Web.Controllers
                 }
             }
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('publishDocuments');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('publishDocuments');";
 
             return View(model);
         }
@@ -849,6 +857,65 @@ namespace University.Portal.Web.Controllers
             TempData["JavaScriptFunction"] = $"showToastrMessage('document added successfully!','');";
 
             return RedirectToAction("PublishDocuments");
+        }
+
+        public IActionResult VerifyDocuments()
+        {
+            var model = new List<DocumentVerificationGrid>();
+
+            var uploadDocumentList = (from stud in _unitOfWork.StudentRepository.GetByFilter(x=>x.UniversityId == GetUniversityId, IncludeStr: "Department")
+                                      join doc in _unitOfWork.UploadDocumentRepository.GetAll() on stud.Id equals doc.StudentId
+                                      select new DocumentVerificationGrid
+                                      {
+                                          Id = doc.Id,
+                                          StudentName = $"{stud.FirstName} {stud.MiddleName} {stud.LastName}",
+                                          Department = stud.Department.DepartmentName,
+                                          Class = GetYearDesc(stud.Year.Value),
+                                          DocumentType = doc.DocumentType,
+                                          DocumentName = doc.DocumentName,
+                                          UploadedOn = doc.CreatedOn.ToString("MM/dd/yyyy"),
+                                          Status = doc.Status != null ? (doc.Status.Value ? "Accepted" : "Rejected") : string.Empty
+                                      }
+                                      ).ToList();
+
+            model = uploadDocumentList;
+
+            TempData["SetActiveTab"] = $"setActiveTabClass('verifyDocument');";
+
+            return View(model);
+        }
+
+        
+        public async Task<IActionResult> AcceptUploadedDocument(int Id)
+        {
+            var uploadDocument = _unitOfWork.UploadDocumentRepository.Get(Id);
+            uploadDocument.Status = true;
+
+            _unitOfWork.UploadDocumentRepository.Update(uploadDocument);
+
+            SendUploadDocumentAcceptRejectNotification(uploadDocument);
+
+            await _unitOfWork.CompleteAsync();
+
+            TempData["JavaScriptFunction"] = $"showToastrMessage('document acceepted successfully!','');";
+
+            return RedirectToAction("VerifyDocuments");
+        }
+        
+        public async Task<IActionResult> RejectUploadedDocument(int Id)
+        {
+            var uploadDocument = _unitOfWork.UploadDocumentRepository.Get(Id);
+            uploadDocument.Status = false;
+
+            _unitOfWork.UploadDocumentRepository.Update(uploadDocument);
+            
+            SendUploadDocumentAcceptRejectNotification(uploadDocument);
+
+            await _unitOfWork.CompleteAsync();
+
+            TempData["JavaScriptFunction"] = $"showToastrMessage('document rejected successfully!','');";
+
+            return RedirectToAction("VerifyDocuments");
         }
 
         private StudentViewModel GetStudentRegisterViewModel(bool isRegistrationFailed = false)
@@ -895,7 +962,7 @@ namespace University.Portal.Web.Controllers
             var student = _unitOfWork.StudentRepository.Get(id);
 
             var subjectMasterList = _unitOfWork.SubjectMasterRepository
-                .GetByFilter(x => x.UniversityId == GetUniversityId && x.DepartmentId == student.DepartmentId && x.Year == student.Year).ToList();
+                .GetByFilter(x => x.DepartmentId == student.DepartmentId && x.Year == student.Year).ToList();
 
             int i = 0;
 
@@ -1088,6 +1155,18 @@ namespace University.Portal.Web.Controllers
                 StudentID = studentDocument.StudentId,
                 StudentOrUniversity = (int)StudentOrUniversity.Student,
                 Message = $"{document.DocName} added in your document folder.You can download in Download Documents tab."
+            };
+
+            _unitOfWork.NotificationRepository.Add(notification);
+        }
+
+        private void SendUploadDocumentAcceptRejectNotification(UploadDocument uploadDocument)
+        {
+            var notification = new Notification()
+            {
+                StudentID = uploadDocument.StudentId,
+                StudentOrUniversity = (int)StudentOrUniversity.Student,
+                Message = $"{uploadDocument.DocumentName} { (uploadDocument.Status.Value ? "Accepted" : "Rejected") } by Admin on {DateTime.Now.ToString("MM/dd/yyyy")}"
             };
 
             _unitOfWork.NotificationRepository.Add(notification);

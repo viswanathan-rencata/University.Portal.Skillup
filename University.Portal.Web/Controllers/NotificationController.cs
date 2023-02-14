@@ -39,7 +39,7 @@ namespace University.Portal.Web.Controllers
                                     }).ToList();
             }
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('notifications');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('notifications');";
 
             return View(notificationList);
         }

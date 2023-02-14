@@ -35,7 +35,7 @@ namespace University.Portal.Web.Controllers
                                        DocumentName = a.DocumentMaster.DocName
                                    }).ToList();
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('downloadDocuments');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('downloadDocuments');";
 
             return View(studentDocument);
         }
@@ -93,7 +93,7 @@ namespace University.Portal.Web.Controllers
                                                   DueDate = a.DueDate
                                               }).ToList();
             
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('feePayment');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('feePayment');";
             
             return View(list);
         }
@@ -147,7 +147,7 @@ namespace University.Portal.Web.Controllers
                                            Result = a.ExamResult ? "Pass" : "Fail"
                                        }).ToList();
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('viewResults');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('viewResults');";
 
             return View(examResultViewModel);
         }
@@ -168,7 +168,7 @@ namespace University.Portal.Web.Controllers
             
             model.UploadDocumentGrid = uploadDocumentList;
 
-            TempData["JavaScriptFunction"] = $"setActiveTabClass('uploadDocument');";
+            TempData["SetActiveTab"] = $"setActiveTabClass('uploadDocument');";
 
             return View(model);
         }
@@ -177,6 +177,11 @@ namespace University.Portal.Web.Controllers
         public async Task<IActionResult> UploadDocument(UploadDocumentViewModel model)
         {
             byte[] fileContent = null;
+
+            if(model.DocumentData == null)
+            {
+                ModelState.AddModelError("DocumentData", "Please select file");
+            }
 
             if (ModelState.IsValid)
             {
@@ -200,6 +205,8 @@ namespace University.Portal.Web.Controllers
                 };
 
                 _unitOfWork.UploadDocumentRepository.Add(uploadDocument);
+
+                SendUploadDocumentNotification(uploadDocument);
 
                 TempData["JavaScriptFunction"] = $"showToastrMessage('document uploaded Succeefully!','');";
 
@@ -246,6 +253,20 @@ namespace University.Portal.Web.Controllers
                 UniversityId = student.UniversityId,
                 StudentOrUniversity = (int)StudentOrUniversity.University,
                 Message = $"Tution Fee payment completed by {student.FirstName} {student.LastName}. Total paid amount Rs.{feePayment.Amount.ToString("0.00")} and payment date is {DateTime.Now.ToString("MM/dd/yyyy")}"
+            };
+
+            _unitOfWork.NotificationRepository.Add(notification);
+        }
+
+        private void SendUploadDocumentNotification(UploadDocument uploadDocument)
+        {
+            var student = _unitOfWork.StudentRepository.Get(GetStudentId);
+
+            var notification = new Notification()
+            {
+                UniversityId = student.UniversityId,
+                StudentOrUniversity = (int)StudentOrUniversity.University,
+                Message = $"{uploadDocument.DocumentName} uploaded for verification on {DateTime.Now.ToString("MM/dd/yyyy")} by {student.FirstName} {student.MiddleName} {student.LastName}"
             };
 
             _unitOfWork.NotificationRepository.Add(notification);

@@ -90,6 +90,18 @@
                 }
             }
             @{
+                if (User.FindFirst("Role").Value == "Office Admin")
+                {
+                    <li>
+                        <a href="/University/VerifyDocuments" class="nav-link text-white" id="verifyDocument">
+                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>*@
+                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                            Verify Documents
+                        </a>
+                    </li>
+                }
+            }
+            @{
                 if (User.FindFirst("Role").Value == "Exam Coordinator")
                 {
                     <li>

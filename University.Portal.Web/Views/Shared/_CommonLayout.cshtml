@@ -90,7 +90,7 @@
                 }
             }
             @{
-                if (User.FindFirst("Role").Value == "ExaminationCoordinator")
+                if (User.FindFirst("Role").Value == "Exam Coordinator")
                 {
                     <li>
                         <a href="/University/ExamSchedule" class="nav-link text-white" id="examSchedule">
@@ -141,6 +141,17 @@
                 if (User.FindFirst("Role").Value == "Student")
                 {
                     <li>
+                        <a href="/Notification/Notification" class="nav-link text-white">
+                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            Notifications
+                        </a>
+                    </li>
+                }
+            }
+            @{
+                if (User.FindFirst("Role").Value == "Student")
+                {
+                    <li>
                         <a href="/Student/FeePayment" class="nav-link text-white">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
                             Fee Payment
@@ -169,18 +180,7 @@
                         </a>
                     </li>
                 }
-            }
-            @{
-                if (User.FindFirst("Role").Value == "Student")
-                {
-                    <li>
-                        <a href="/Notification/Notification" class="nav-link text-white">
-                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
-                            Notifications
-                        </a>
-                    </li>
-                }
-            }
+            }            
             @{
                 if (User.FindFirst("Role").Value == "Office Admin" || User.FindFirst("Role").Value == "Exam Coordinator")
                 {

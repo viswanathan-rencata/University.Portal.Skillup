@@ -121,7 +121,7 @@ body {
 .sidebar {
     margin: 0;
     padding: 0;
-    width: 200px;
+    width: 230px;
     background-color: #f1f1f1;
     position: fixed;
     height: 100%;
@@ -136,7 +136,7 @@ body {
     }
 
         .sidebar a.active {
-            background-color: #04AA6D;
+            background-color: black !important;
             color: white;
         }
 

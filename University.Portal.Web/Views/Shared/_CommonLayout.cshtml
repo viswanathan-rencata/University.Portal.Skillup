@@ -8,19 +8,19 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
     <script src="~/lib/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
-    
+
     <script src="~/lib/toastr.js/toastr.min.js"></script>
-    
+
     <script src="~/js/commonlayout.js"></script>
-    
+
     <link rel="stylesheet" href="~/lib/toastr.js/toastr.min.css" asp-append-version="true" />
     <link href="~/lib/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/css/commonlayout.css" asp-append-version="true" /> 
+    <link rel="stylesheet" href="~/css/commonlayout.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -34,13 +34,13 @@
                         <li class="nav-item">
                             @{
                                 <h1 class="nav-link active" style="text-align:center">@User.FindFirst("UniversityName").Value</h1>
-                            }                            
+                            }
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right pr50">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                @User.Identity.Name
+                                <i class="fa fa-user" aria-hidden="true"></i> @User.Identity.Name
                                 <br /><span>@User.FindFirst("Role").Value</span>
                             </a>
                             <ul class="dropdown-menu">
@@ -69,8 +69,9 @@
                 if (User.FindFirst("Role").Value == "Office Admin" || User.FindFirst("Role").Value == "Exam Coordinator")
                 {
                     <li class="nav-item">
-                        <a href="/University" class="nav-link" aria-current="page">
+                        <a href="/University" class="nav-link" aria-current="page" id="studentDetails">
                             @* <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>*@
+                            <i class="fa fa-users" aria-hidden="true"></i>
                             Student Details
                         </a>
                     </li>
@@ -80,19 +81,21 @@
                 if (User.FindFirst("Role").Value == "Office Admin")
                 {
                     <li>
-                        <a href="/University/TutionFeeDetails" class="nav-link text-white">
+                        <a href="/University/TutionFeeDetails" class="nav-link text-white" id="tutionFeeDetails">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>*@
+                            <i class="fa fa-money" aria-hidden="true"></i>
                             Tution Fee Details
                         </a>
                     </li>
                 }
             }
             @{
-                if (User.FindFirst("Role").Value == "Exam Coordinator")
+                if (User.FindFirst("Role").Value == "ExaminationCoordinator")
                 {
                     <li>
-                        <a href="/University/ExamSchedule" class="nav-link text-white">
+                        <a href="/University/ExamSchedule" class="nav-link text-white" id="examSchedule">
                             @* <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>*@
+                            <i class="fa fa-university" aria-hidden="true"></i>
                             Exam Schedule Details
                         </a>
                     </li>
@@ -102,8 +105,9 @@
                 if (User.FindFirst("Role").Value == "Exam Coordinator")
                 {
                     <li>
-                        <a href="/University/ExamFeeDetails" class="nav-link text-white">
+                        <a href="/University/ExamFeeDetails" class="nav-link text-white" id="feeDetails">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>*@
+                            <i class="fa fa-money" aria-hidden="true"></i>
                             Fee Details
                         </a>
                     </li>
@@ -113,8 +117,9 @@
                 if (User.FindFirst("Role").Value == "Exam Coordinator")
                 {
                     <li>
-                        <a href="/University/PublishExamResult" class="nav-link text-white">
+                        <a href="/University/PublishExamResult" class="nav-link text-white" id="publishExamResult">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            <i class="fa fa-bullhorn" aria-hidden="true"></i>
                             Publish Exam Result
                         </a>
                     </li>
@@ -124,20 +129,10 @@
                 if (User.FindFirst("Role").Value == "Exam Coordinator")
                 {
                     <li>
-                        <a href="/University/PublishDocuments" class="nav-link text-white">
+                        <a href="/University/PublishDocuments" class="nav-link text-white" id="publishDocuments">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            <i class="fa fa-file-text" aria-hidden="true"></i>
                             Publish Documents
-                        </a>
-                    </li>
-                }
-            }
-            @{
-                if (User.FindFirst("Role").Value == "Student")
-                {
-                    <li>
-                        <a href="/Notification/Notification" class="nav-link text-white">
-                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
-                            Notifications
                         </a>
                     </li>
                 }
@@ -168,7 +163,7 @@
                 if (User.FindFirst("Role").Value == "Student")
                 {
                     <li>
-                        <a href="/Student/DownloadDocuments" class="nav-link text-white">
+                        <a href="/Student/UploadDocument" class="nav-link text-white" id="uploadDocument">
                             @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
                             Download Documents
                         </a>
@@ -176,7 +171,7 @@
                 }
             }
             @{
-                if (User.FindFirst("Role").Value == "Office Admin" || User.FindFirst("Role").Value == "Exam Coordinator")
+                if (User.FindFirst("Role").Value == "Student")
                 {
                     <li>
                         <a href="/Notification/Notification" class="nav-link text-white">
@@ -186,7 +181,18 @@
                     </li>
                 }
             }
-            
+            @{
+                if (User.FindFirst("Role").Value == "Office Admin" || User.FindFirst("Role").Value == "Exam Coordinator")
+                {
+                    <li>
+                        <a href="/Notification/Notification" class="nav-link text-white" id="notifications">
+                            @*<svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>*@
+                            <i class="fa fa-bell" aria-hidden="true"></i>
+                            Notifications
+                        </a>
+                    </li>
+                }
+            }
             
 
         </ul>
@@ -236,6 +242,11 @@
             }
             toastr.success(message, title, options)
         };
+
+        function setActiveTabClass(id) {
+            $('#' + id).addClass('active');
+        };
+
     </script>
     @if (ViewBag.JavaScriptFunction != null)
     {
@@ -247,6 +258,19 @@
     {
         <script type="text/javascript">
             @Html.Raw(TempData["JavaScriptFunction"])
+        </script>
+    }
+
+    @if (ViewBag.SetActiveTab != null)
+    {
+        <script type="text/javascript">
+            @Html.Raw(ViewBag.JavaScriptFunction)
+        </script>
+    }
+    else if (TempData["SetActiveTab"] != null)
+    {
+        <script type="text/javascript">
+            @Html.Raw(TempData["SetActiveTab"])
         </script>
     }
 

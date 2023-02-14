@@ -1,0 +1,90 @@
+﻿@using University.Portal.Data.Data.ViewModels;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<DocumentVerificationGrid>
+
+@{
+    if (Model != null && Model.Count() > 0)
+    {
+        <table id="table1" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
+            <thead>
+                <tr>
+                    <th data-field="Student Name" data-filter-control="input">Student Name</th>
+                    <th data-field="Department" data-filter-control="input">Department</th>
+                    <th data-field="Class" data-filter-control="input">Class</th>
+                    <th data-field="Document Type" data-filter-control="input">Document Type</th>
+                    <th data-field="Document Name" data-filter-control="input">Document Name</th>
+                    <th data-field="Uploaded On" data-filter-control="input">Uploaded On</th>
+                    <th data-field="Status" data-filter-control="input">Status</th>
+                    <th data-field="Action">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.StudentName</th>
+                        <td>@item.Department</td>
+                        <td>@item.Class</td>
+                        <td>@item.DocumentType</td>
+                        <td>@item.DocumentName</td>
+                        <td>@item.UploadedOn</td>
+                        <td>@item.Status</td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-evenly">
+                                <a asp-action="ViewUploadedDocument" asp-route-id="Id" class="btn btn-primary gridbtn">View</a>
+                                @{
+                                    if (item.Status == "Accepted" || item.Status == "Rejected")
+                                    {                                        
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="AcceptUploadedDocument" asp-route-id="@item.Id" class="btn btn-success gridbtn">Accept</a>
+                                        <a asp-action="RejectUploadedDocument" asp-route-id="@item.Id" class="btn btn-danger gridbtn">Reject</a>
+                                    }
+                                }
+                                
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="table table-bordered" style="margin-top:50px">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Department</th>
+                    <th>Class</th>
+                    <th>Document Type</th>
+                    <th>Document Name</th>
+                    <th>Uploaded On</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="7" class="text-center">No Records Found!</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+}
+
+<div style="float:right">
+    <h3>Total Records (@Model.Count())</h3>
+</div>
+
+<script>
+    $(function () {
+        $('#table1').bootstrapTable();
+        $('.fixed-table-loading').remove();
+    })
+</script>

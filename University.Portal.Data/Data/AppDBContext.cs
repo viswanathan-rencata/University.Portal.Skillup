@@ -27,6 +27,7 @@ namespace University.Portal.Data.Data
         public DbSet<StudentDocument> StudentDocument { get; set; }
         public DbSet<SubjectMaster> SubjectMaster { get; set; }
         public DbSet<SubjectResult> SubjectResult { get; set; }
+        public DbSet<UploadDocument> UploadDocument { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -89,9 +90,6 @@ namespace University.Portal.Data.Data
                 .HasOne(p => p.DocumentMaster);
 
             modelBuilder.Entity<SubjectMaster>()
-               .HasOne(p => p.University);
-
-            modelBuilder.Entity<SubjectMaster>()
                .HasOne(p => p.Department);
 
             modelBuilder.Entity<SubjectResult>()
@@ -99,6 +97,9 @@ namespace University.Portal.Data.Data
             
             modelBuilder.Entity<SubjectResult>()
               .HasOne(p => p.Student);
+
+            modelBuilder.Entity<UploadDocument>()
+             .HasOne(p => p.Student);
 
         }
     }

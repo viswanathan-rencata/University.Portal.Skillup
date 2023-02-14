@@ -35,8 +35,8 @@
                 } else {
                     $('#loginValidation').show();
                     $('#loginFailed').text(response);
-                    $('#univ-sign-in')[0].innerHTML = '<i class="fa fa-refresh fa-spin"></i> Signing In';
-                    $('#univ-sign-in').addClass('disabled');
+                    $('#univ-sign-in')[0].innerHTML = 'Sign In';
+                    $('#univ-sign-in').removeClass('disabled');
                 }
                 
             },

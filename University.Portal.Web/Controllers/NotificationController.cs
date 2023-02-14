@@ -38,7 +38,9 @@ namespace University.Portal.Web.Controllers
                                         CreatedOn = a.CreatedOn
                                     }).OrderByDescending(x => x.CreatedOn).ToList();
             }
-            
+
+            TempData["SetActiveTab"] = $"setActiveTabClass('notifications');";
+
             return View(notificationList);
         }
         private int GetStudentId => Convert.ToInt32(HttpContext.User.FindFirst("StudentId").Value);

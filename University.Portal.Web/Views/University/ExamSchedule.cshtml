@@ -9,11 +9,13 @@
 @model IEnumerable<ExamScheduleListViewModel>;
 
 @{
+    <label style="margin-top:50px;font-size:x-large">Exam Schedule Details</label>
     if (Model != null && Model.Count() > 0)
     {
         <table id="table1" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
             <thead>
                 <tr>
+                    <th data-filter-control="input">S.No</th>
                     <th data-field="Department" data-filter-control="input">Department</th>
                     <th data-field="Class" data-filter-control="input">Class</th>
                     <th data-field="Start Date" data-filter-control="input">Start Date</th>
@@ -23,9 +25,13 @@
                 </tr>
             </thead>
             <tbody>
+                @{
+                    var i = 1;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <th>@(i)</th>
                         <th scope="row">@item.Department</th>
                         <td>@item.Year</td>
                         <td>@item.StartDate.ToString("MM/dd/yyyy")</td>
@@ -37,6 +43,7 @@
                             </div>
                         </td>
                     </tr>
+                    i++;
                 }
             </tbody>
         </table>
@@ -46,6 +53,7 @@
         <table class="table table-bordered" style="margin-top:50px">
             <thead>
                 <tr>
+                    <th>S.No</th>
                     <th>Department</th>
                     <th>Class</th>
                     <th>Start Date</th>
@@ -62,7 +70,7 @@
 }
 
 <div style="float:right">
-    <h3>Total Records (@Model.Count())</h3>
+    <h5>Total Records (@Model.Count())</h5>
     <input type="button" value="Add Exam Schedule" class="btn btn-primary mt-5" style="float:right" onclick="@("window.location.href='" + @Url.Action("AddEditExamSchedule", "University") + "'");" />
 </div>
 

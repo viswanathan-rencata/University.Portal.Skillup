@@ -9,11 +9,13 @@
 @model IEnumerable<PublishDocumentViewModel>;
 
 @{
+    <label style="margin-top:50px;font-size:x-large">Publish Documents</label>
     if (Model != null && Model.Count() > 0)
     {
         <table id="table1" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
             <thead>
                 <tr>
+                    <th data-filter-control="input">S.No</th>
                     <th data-field="Student Name" data-filter-control="input">Student Name</th>
                     <th data-field="Department" data-filter-control="input">Department</th>
                     <th data-field="Class" data-filter-control="input">Class</th>
@@ -23,9 +25,13 @@
                 </tr>
             </thead>
             <tbody>
+                @{
+                    var i = 1;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <th>@(i)</th>
                         <th scope="row">@item.StudentName</th>
                         <td>@item.Department</td>
                         <td>@item.Class</td>
@@ -36,6 +42,7 @@
                             </div>
                         </td>
                     </tr>
+                    i++;
                 }
             </tbody>
         </table>
@@ -61,7 +68,7 @@
 }
 
 <div style="float:right">
-    <h3>Total Records (@Model.Count())</h3>    
+    <h5>Total Records (@Model.Count())</h5>    
 </div>
 
 <script>

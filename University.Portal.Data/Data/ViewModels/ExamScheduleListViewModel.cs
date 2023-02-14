@@ -10,7 +10,7 @@ namespace University.Portal.Data.Data.ViewModels
     {
         public int Id { get; set; }
         public string Department { get; set; }
-        public int Year { get; set; }
+        public string Year { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }

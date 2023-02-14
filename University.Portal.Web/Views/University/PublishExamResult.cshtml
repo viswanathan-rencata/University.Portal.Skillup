@@ -9,11 +9,13 @@
 @model IEnumerable<ExamResultGridViewModel>;
 
 @{
+    <label style="margin-top:50px;font-size:x-large">Publish Exam Result</label>
     if (Model != null && Model.Count() > 0)
     {
         <table id="table" class="table table-bordered" style="margin-top:50px" data-filter-control="true">
             <thead>
                 <tr>
+                    <th data-filter-control="input">S.No</th>
                     <th data-field="Student Code" data-filter-control="input">Student Code</th>
                     <th data-field="Student Name" data-filter-control="input">Student Name</th>
                     <th data-field="Department" data-filter-control="input">Department</th>
@@ -22,9 +24,13 @@
                 </tr>
             </thead>
             <tbody>
+                @{
+                    var i = 1;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <th>@(i)</th>
                         <th scope="row">@item.StudentCode</th>
                         <td>@item.StudentName</td>
                         <td>@item.Department</td>
@@ -37,11 +43,12 @@
                                 }
                                 else
                                 {
-                                    <a asp-action="AddEditExamResultNew" asp-route-id=@item.Id class="btn btn-primary gridbtn">Publish Result</a>
+                                    <a asp-action="AddEditExamResultNew" asp-route-id=@item.Id class="btn btn-primary gridbtn">Add Result</a>
                                 }
                             </div>
                         </td>
                     </tr>
+                    i++;
                 }
             </tbody>
         </table>
@@ -68,7 +75,7 @@
 }
 
 <div style="float:right">
-    <h3>Total Records (@Model.Count())</h3>
+    <h5>Total Records (@Model.Count())</h5>
 </div>
 
 <script>

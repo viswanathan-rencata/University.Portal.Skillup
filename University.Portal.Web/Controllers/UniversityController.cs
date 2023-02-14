@@ -375,7 +375,7 @@ namespace University.Portal.Web.Controllers
                                        {
                                            Id = a.Id,
                                            Department = a.Department.DepartmentName,
-                                           Year = a.Year,
+                                           Year =  GetYearDesc(a.Year),
                                            StartDate = a.StartDate,
                                            EndDate = a.EndDate,
                                        }).ToList();
@@ -1006,7 +1006,7 @@ namespace University.Portal.Web.Controllers
                 if (i == 7)
                 {
                     model.SubjectMasterId8 = subjectMaster.Id;
-                    model.SubjectName8 = subjectMaster.SubjectName;
+                    model.SubjectName8 = "Electronic Circuits";
                 }
                 i++;
             }

@@ -15,9 +15,6 @@ namespace University.Portal.Data.Data.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("UniversityId")]
-        public int UniversityId { get; set; }
-
         [Column("DepartmentId")]
         public int DepartmentId { get; set; }
 
@@ -31,9 +28,7 @@ namespace University.Portal.Data.Data.Models
         public string SubjectName { get; set; }
 
         [Column("CreatedOn")]
-        public DateTime CreatedOn { get; set; }
-
-        public UniversityMaster University { get; set; }
+        public DateTime CreatedOn { get; set; }        
         public Department Department { get; set; }
     }
 }
